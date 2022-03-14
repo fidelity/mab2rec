@@ -84,7 +84,7 @@ for guidelines on building recommenders, performing model selection, and evaluat
 
 Mab2Rec is built on top of several other open-source software from the AI Center at Fidelity, including:
 
-* [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418))
+* [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418)).
 * [TextWiser](https://github.com/fidelity/textwiser) to create item representations via text featurization ([AAAI'21](https://ojs.aaai.org/index.php/AAAI/article/view/17814)).
 * [Selective](https://github.com/fidelity/selective) to create user representations via feature selection.
 * [Seq2Pat](https://github.com/fidelity/seq2pat) to enhance users representations via sequential pattern mining ([AAAI'22](https://aaai.org/Conferences/AAAI-22/)).
