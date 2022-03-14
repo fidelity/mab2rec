@@ -1,0 +1,11 @@
+################
+# train.yaml
+################
+
+# Recommender
+recommender_pickle: tmp_dir/rec.pkl
+
+# Data
+data: data/data_test.csv
+user_features: data/features_user.csv
+save_file: tmp_dir/results.csv

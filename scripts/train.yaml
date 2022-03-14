@@ -1,0 +1,15 @@
+################
+# train.yaml
+################
+
+# Recommender
+Recommender:
+  learning_policy: LinGreedy
+LinGreedy:
+  epsilon: 0.1
+  l2_lambda: 1.
+
+# Data
+data: data/data_train.csv
+user_features: data/features_user.csv
+save_file: tmp_dir/rec.pkl
