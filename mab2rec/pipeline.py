@@ -318,9 +318,10 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
               user_id_col: str = Constants.user_id,
               item_id_col: str = Constants.item_id,
               response_col: str = Constants.response,
-              batch_size: int = 100000) -> Union[Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]],
-                                                 Tuple[List[Dict[str, pd.DataFrame]],
-                                                       List[Dict[str, Dict[str, float]]]]]:
+              batch_size: int = 100000,
+              verbose: bool = False) -> Union[Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]],
+                                              Tuple[List[Dict[str, pd.DataFrame]],
+                                                    List[Dict[str, Dict[str, float]]]]]:
 
     """
     Benchmark Recommenders.
@@ -392,6 +393,8 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
         Response column name.
     batch_size : str, default=100000
         Batch size used for chunking data.
+    verbose : bool, default=False
+        Whether to print progress or not.
 
     Returns
     -------
@@ -425,7 +428,11 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
 
         # Split data into cv folds and run benchmark
         group_kfold = GroupKFold(n_splits=cv)
+        i = 1
         for train_index, test_index in group_kfold.split(df, groups=df[user_id_col]):
+
+            if verbose:
+                print(f'CV Fold = {i}')
 
             # Set train/test data frames
             args['train_data'] = df.iloc[train_index, :]
@@ -437,6 +444,8 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
             # Append
             recommendations_list.append(recommendations)
             metrics_list.append(metrics)
+
+            i += 1
 
         return recommendations_list, metrics_list
 
@@ -456,7 +465,8 @@ def _bench(recommenders: Dict[str, BanditRecommender],
            user_id_col: str = Constants.user_id,
            item_id_col: str = Constants.item_id,
            response_col: str = Constants.response,
-           batch_size: int = 100000) -> Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]]:
+           batch_size: int = 100000,
+           verbose: bool = False) -> Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]]:
 
     # Import data
     train_data_df, item_list, user_features_df, \
@@ -475,6 +485,9 @@ def _bench(recommenders: Dict[str, BanditRecommender],
     recommendations = dict()
     rec_metrics = dict()
     for name, recommender in recommenders.items():
+
+        if verbose:
+            print(f'--- Running: {name} ---')
 
         # Copy recommender
         rec = deepcopy(recommender)
