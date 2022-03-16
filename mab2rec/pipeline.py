@@ -416,7 +416,10 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
     else:
 
         # Read data
-        df = pd.read_csv(train_data)
+        if isinstance(train_data, str):
+            df = pd.read_csv(train_data)
+        else:
+            df = pd.DataFrame(train_data)
 
         # Initialize lists to store recommendation results and metrics for each fold
         recommendations_list = []
