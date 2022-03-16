@@ -427,6 +427,17 @@ class BanditRecommenderTest(BaseTest):
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [1, 2])
 
+    def test_recommend_random_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.Random(),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[1, 2], [1, 2], [3, 2], [1, 3], [2, 3]])
+
     def test_recommend_popularity(self):
         results, rec = self.predict(arms=[1, 2, 3],
                                     decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
@@ -441,6 +452,17 @@ class BanditRecommenderTest(BaseTest):
         # No scores
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [1, 3])
+
+    def test_recommend_popularity_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.Popularity(),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[3, 1], [1, 3], [3, 1], [3, 1], [3, 1]])
 
     def test_recommend_greedy(self):
         results, rec = self.predict(arms=[1, 2, 3],
@@ -472,6 +494,17 @@ class BanditRecommenderTest(BaseTest):
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [2, 3])
 
+    def test_recommend_greedy_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.EpsilonGreedy(epsilon=0.5),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[1, 3], [1, 2], [3, 1], [1, 3], [1, 3]])
+
     def test_recommend_softmax(self):
         results, rec = self.predict(arms=[1, 2, 3],
                                     decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
@@ -486,6 +519,17 @@ class BanditRecommenderTest(BaseTest):
         # No scores
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [2, 3])
+
+    def test_recommend_softmax_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.Softmax(),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[3, 1], [2, 3], [3, 2], [3, 2], [3, 1]])
 
     def test_recommend_ucb(self):
         results, rec = self.predict(arms=[1, 2, 3],
@@ -517,6 +561,17 @@ class BanditRecommenderTest(BaseTest):
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [2, 1])
 
+    def test_recommend_ucb_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.UCB1(),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[1, 3], [1, 3], [1, 3], [1, 3], [1, 3]])
+
     def test_recommend_ts(self):
         results, rec = self.predict(arms=[1, 2, 3],
                                     decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
@@ -531,6 +586,17 @@ class BanditRecommenderTest(BaseTest):
         # No scores
         results = rec.recommend(return_scores=False)
         self.assertEqual(results, [3, 1])
+
+    def test_recommend_ts_w_empty_context(self):
+        results, rec = self.predict(arms=[1, 2, 3],
+                                    decisions=[1, 1, 1, 2, 2, 3, 3, 3, 3, 3],
+                                    rewards=[0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                                    learning_policy=LearningPolicy.ThompsonSampling(),
+                                    contexts=[[]] * 5,
+                                    neighborhood_policy=None,
+                                    top_k=2,
+                                    seed=123456)
+        self.assertEqual(results[0], [[1, 2], [3, 1], [3, 1], [1, 3], [1, 3]])
 
     def test_recommend_lin_greedy(self):
         results, rec = self.predict(arms=[1, 2, 3],

@@ -237,6 +237,13 @@ class ScoreTest(BaseTest):
             self.assertEqual(df.ndim, 2)
             cp_prev = deepcopy(cp)
 
+    def test_learning_policy_no_features(self):
+        rec = BanditRecommender(LearningPolicy.EpsilonGreedy())
+        train(rec, train_data_df)
+        df = score(rec, test_data_df)
+        self.assertEqual(df.shape[1], 3)
+        self.assertEqual(df.ndim, 2)
+
     def test_load_from_pickle(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
             rec_pickle = os.path.join(tmp_dir, "rec.pkl")
