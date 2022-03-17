@@ -4,6 +4,7 @@
 
 import os
 from copy import deepcopy
+from time import time
 from typing import Dict, List, NoReturn, Tuple, Union
 
 import numpy as np
@@ -116,6 +117,7 @@ def train(recommender: BanditRecommender,
 
     # Initialize and set arms of recommender
     recommender.set_arms(item_list)
+    print(recommender.mab.learning_policy)
 
     # Loop through the data in batches and fit recommender
     num_batches = max(1, len(train_data_df) // batch_size)
@@ -432,7 +434,7 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
         for train_index, test_index in group_kfold.split(df, groups=df[user_id_col]):
 
             if verbose:
-                print(f'CV Fold = {i}')
+                print(f'CV Fold = {i} \n')
 
             # Set train/test data frames
             args['train_data'] = df.iloc[train_index, :]
@@ -485,14 +487,15 @@ def _bench(recommenders: Dict[str, BanditRecommender],
     recommendations = dict()
     rec_metrics = dict()
     for name, recommender in recommenders.items():
-
         if verbose:
-            print(f'--- Running: {name} ---')
+            print(f'>>> {name}')
+            print('Running...')
 
         # Copy recommender
         rec = deepcopy(recommender)
 
         # Train
+        t0 = time()
         train(
             recommender=rec,
             data=train_data_df,
@@ -527,6 +530,8 @@ def _bench(recommenders: Dict[str, BanditRecommender],
         cm = CombinedMetrics(*metrics)
         rec_metrics[name] = cm.get_score(test_data_df.rename(columns={response_col: Constants.score}),
                                          recommendations[name])
+        if verbose:
+            print(f"Done: {(time() - t0) / 60:.2f} minutes \n")
 
     return recommendations, rec_metrics
 
