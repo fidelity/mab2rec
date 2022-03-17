@@ -117,7 +117,6 @@ def train(recommender: BanditRecommender,
 
     # Initialize and set arms of recommender
     recommender.set_arms(item_list)
-    print(recommender.mab.learning_policy)
 
     # Loop through the data in batches and fit recommender
     num_batches = max(1, len(train_data_df) // batch_size)
@@ -272,7 +271,7 @@ def score(recommender: Union[str, BanditRecommender],
         if user_features_df is not None:
             df = merge_user_features(df, user_features_df, user_id_col)
             feature_cols = [c for c in user_features_df.columns if c != user_id_col]
-            contexts = df[feature_cols]
+            contexts = df[feature_cols].fillna(0)
         else:
             contexts = [[]] * len(df)
 

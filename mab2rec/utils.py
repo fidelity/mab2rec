@@ -441,7 +441,7 @@ def merge_user_features(responses_df: pd.DataFrame, user_features_df: pd.DataFra
     Data frame with merged responses and user features.
     """
     # Subset features to only include users in response data and then merge
-    df = user_features_df[user_features_df[user_id_col].isin(responses_df[user_id_col].values)]
+    df = user_features_df[user_features_df[user_id_col].isin(responses_df[user_id_col].unique())]
     return responses_df.merge(df, on=user_id_col, how="left")
 
 
