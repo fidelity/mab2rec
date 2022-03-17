@@ -395,7 +395,7 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
     batch_size : str, default=100000
         Batch size used for chunking data.
     verbose : bool, default=False
-        Whether to print progress or not.
+        Whether to print progress status or not.
 
     Returns
     -------
