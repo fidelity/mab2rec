@@ -596,7 +596,7 @@ class BanditRecommenderTest(BaseTest):
                                     neighborhood_policy=None,
                                     top_k=2,
                                     seed=123456)
-        self.assertEqual(results[0], [[1, 2], [3, 1], [3, 1], [1, 3], [1, 3]])
+        self.assertEqual(results[0], [[1, 3], [3, 1], [1, 3], [3, 2], [1, 2]])
 
     def test_recommend_lin_greedy(self):
         results, rec = self.predict(arms=[1, 2, 3],

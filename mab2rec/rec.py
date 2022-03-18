@@ -167,7 +167,7 @@ class BanditRecommender:
         """
         self.mab = MAB(arms, self.learning_policy, self.neighborhood_policy, self.seed, self.n_jobs, self.backend)
 
-    def add_arm(self, arm: Arm, binarizer=None, scaler=None) -> NoReturn:
+    def add_arm(self, arm: Arm, binarizer=None) -> NoReturn:
         """Adds an _arm_ to the list of arms.
 
         Incorporates the arm into the learning and neighborhood policies with no training data.
@@ -178,8 +178,6 @@ class BanditRecommender:
             The new arm to be added.
         binarizer : Callable, default=None
             The new binarizer function for Thompson Sampling.
-        scaler : Callable, default=None
-            A scaler object from sklearn.preprocessing.
 
         Returns
         -------
@@ -188,7 +186,7 @@ class BanditRecommender:
         if self.mab is None:
             self._init([arm])
         else:
-            self.mab.add_arm(arm, binarizer, scaler)
+            self.mab.add_arm(arm, binarizer)
 
     def fit(self, decisions: Union[List[Arm], np.ndarray, pd.Series],
             rewards: Union[List[Num], np.ndarray, pd.Series],
@@ -376,7 +374,7 @@ class BanditRecommender:
         self._validate_mab()
         self.mab.remove_arm(arm)
 
-    def set_arms(self, arms: List[Arm], binarizer=None, scaler=None) -> NoReturn:
+    def set_arms(self, arms: List[Arm], binarizer=None) -> NoReturn:
         """Initializes the recommender and sets the recommender with given list of arms.
         Existing arms not in the given list of arms are removed and new arms are incorporated into the learning and
         neighborhood policies with no training data.
@@ -388,8 +386,6 @@ class BanditRecommender:
             The new arm to be added.
         binarizer : Callable, default=None
             The new binarizer function for Thompson Sampling.
-        scaler : Callable, default=None
-            A scaler object from sklearn.preprocessing.
 
         Returns
         -------
@@ -411,7 +407,7 @@ class BanditRecommender:
         # Add arms
         for new_arm in arms:
             if new_arm not in self.mab.arms:
-                self.add_arm(new_arm, binarizer, scaler)
+                self.add_arm(new_arm, binarizer)
 
     def warm_start(self, arm_to_features: Dict[Arm, List[Num]], distance_quantile: float = None) -> NoReturn:
         """Warm-start untrained (cold) arms of the multi-armed bandit.
