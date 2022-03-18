@@ -55,7 +55,7 @@ metric_params = {'click_column': 'score', 'user_id_column': 'user_id', 'item_id_
 
 # Performance metrics for benchmarking (many more available)
 metrics = []
-for top_k in  [3, 5, 10]:
+for top_k in [3, 5, 10]:
     metrics.append(BinaryRecoMetrics.CTR(**metric_params, k=top_k))
     metrics.append(RankingRecoMetrics.NDCG(**metric_params, k=top_k))
 
