@@ -1,3 +1,5 @@
+[![ci](https://github.com/fidelity/mab2rec/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fidelity/mab2rec/actions/workflows/ci.yml) [![PyPI version fury.io](https://badge.fury.io/py/mab2rec.svg)](https://pypi.python.org/pypi/mab2rec/) [![PyPI license](https://img.shields.io/pypi/l/mab2rec.svg)](https://pypi.python.org/pypi/mab2rec/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Downloads](https://static.pepy.tech/personalized-badge/mab2rec?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads)](https://pepy.tech/project/mab2rec)
+
 # Mab2Rec: Multi-Armed Bandits Recommender 
 
 Mab2Rec is a Python library for building bandit-based recommendation algorithms. It supports **context-free**, **parametric** and **non-parametric** **contextual** bandit models powered by [MABWiser](https://github.com/fidelity/mabwiser) and fairness and recommenders evaluations powered by [Jurity](https://github.com/fidelity/jurity).
