@@ -40,9 +40,14 @@ class LinGreedy:
         The regularization strength.
         Integer or float. Must be greater than zero.
         Default value is 1.0.
+    scale: bool
+        Whether to scale features to have zero mean and unit variance.
+        Uses StandardScaler in sklearn.preprocessing.
+        Default value is False.
     """
     epsilon: float = 0.1
     l2_lambda: float = 1.0
+    scale: bool = False
 
 
 @spock
@@ -59,9 +64,14 @@ class LinTS:
         The regularization strength.
         Integer or float. Must be greater than zero.
         Default value is 1.0.
+    scale: bool
+        Whether to scale features to have zero mean and unit variance.
+        Uses StandardScaler in sklearn.preprocessing.
+        Default value is False.
     """
     alpha: float = 1.0
     l2_lambda: float = 1.0
+    scale: bool = False
 
 
 @spock
@@ -78,9 +88,14 @@ class LinUCB:
         The regularization strength.
         Integer or float. Cannot be negative.
         Default value is 1.0.
+    scale: bool
+        Whether to scale features to have zero mean and unit variance.
+        Uses StandardScaler in sklearn.preprocessing.
+        Default value is False.
     """
     alpha: float = 1.0
     l2_lambda: float = 1.0
+    scale: bool = False
 
 
 @spock
@@ -283,11 +298,11 @@ def init_recommender(config):
     if isinstance(lp_params, EpsilonGreedy):
         lp = LearningPolicy.EpsilonGreedy(epsilon=lp_params.epsilon)
     elif isinstance(lp_params, LinGreedy):
-        lp = LearningPolicy.LinGreedy(epsilon=lp_params.epsilon, l2_lambda=lp_params.l2_lambda)
+        lp = LearningPolicy.LinGreedy(epsilon=lp_params.epsilon, l2_lambda=lp_params.l2_lambda, scale=lp_params.scale)
     elif isinstance(lp_params, LinTS):
-        lp = LearningPolicy.LinTS(alpha=lp_params.alpha, l2_lambda=lp_params.l2_lambda)
+        lp = LearningPolicy.LinTS(alpha=lp_params.alpha, l2_lambda=lp_params.l2_lambda, scale=lp_params.scale)
     elif isinstance(lp_params, LinUCB):
-        lp = LearningPolicy.LinUCB(alpha=lp_params.alpha, l2_lambda=lp_params.l2_lambda)
+        lp = LearningPolicy.LinUCB(alpha=lp_params.alpha, l2_lambda=lp_params.l2_lambda, scale=lp_params.scale)
     elif isinstance(lp_params, Popularity):
         lp = LearningPolicy.Popularity()
     elif isinstance(lp_params, Random):
