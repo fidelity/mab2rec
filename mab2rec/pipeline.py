@@ -4,6 +4,7 @@
 
 import os
 from copy import deepcopy
+from time import time
 from typing import Dict, List, NoReturn, Tuple, Union
 
 import numpy as np
@@ -262,29 +263,27 @@ def score(recommender: Union[str, BanditRecommender],
     scores = []
     num_batches = max(1, len(users) // batch_size)
     for users_of_batch in np.array_split(users, num_batches):
-        df = pd.DataFrame({user_id_col: users_of_batch})
-        if recommender.mab.is_contextual:
 
-            # Merge user features and get feature column names
+        # Data frame of users to score
+        df = pd.DataFrame({user_id_col: users_of_batch})
+
+        # Merge user features and get feature column names
+        if user_features_df is not None:
             df = merge_user_features(df, user_features_df, user_id_col)
             feature_cols = [c for c in user_features_df.columns if c != user_id_col]
-
-            # Merge excluded item list
-            if item_eligibility is not None:
-                df = df.merge(excluded_df, how='left', on=user_id_col)
-                excluded_arms_batch = df[item_id_col].tolist()
-            else:
-                excluded_arms_batch = None
-
-            # Get recommendations
-            recs_of_batch, scores_of_batch = recommender.recommend(df[feature_cols], excluded_arms_batch,
-                                                                   return_scores=True)
+            contexts = df[feature_cols].fillna(0)
         else:
-            recs_of_batch = [[]] * len(df)
-            scores_of_batch = [[]] * len(df)
-            for i in range(len(df)):
-                recs_of_batch[i], scores_of_batch[i] = recommender.recommend(return_scores=True)
+            contexts = [[]] * len(df)
 
+        # Merge excluded item list
+        if item_eligibility is not None:
+            df = df.merge(excluded_df, how='left', on=user_id_col)
+            excluded_arms_batch = df[item_id_col].tolist()
+        else:
+            excluded_arms_batch = None
+
+        # Get recommendations
+        recs_of_batch, scores_of_batch = recommender.recommend(contexts, excluded_arms_batch, return_scores=True)
         recommendations += recs_of_batch
         scores += scores_of_batch
 
@@ -320,9 +319,10 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
               user_id_col: str = Constants.user_id,
               item_id_col: str = Constants.item_id,
               response_col: str = Constants.response,
-              batch_size: int = 100000) -> Union[Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]],
-                                                 Tuple[List[Dict[str, pd.DataFrame]],
-                                                       List[Dict[str, Dict[str, float]]]]]:
+              batch_size: int = 100000,
+              verbose: bool = False) -> Union[Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]],
+                                              Tuple[List[Dict[str, pd.DataFrame]],
+                                                    List[Dict[str, Dict[str, float]]]]]:
 
     """
     Benchmark Recommenders.
@@ -394,6 +394,8 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
         Response column name.
     batch_size : str, default=100000
         Batch size used for chunking data.
+    verbose : bool, default=False
+        Whether to print progress status or not.
 
     Returns
     -------
@@ -427,7 +429,11 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
 
         # Split data into cv folds and run benchmark
         group_kfold = GroupKFold(n_splits=cv)
+        i = 1
         for train_index, test_index in group_kfold.split(df, groups=df[user_id_col]):
+
+            if verbose:
+                print(f'CV Fold = {i} \n')
 
             # Set train/test data frames
             args['train_data'] = df.iloc[train_index, :]
@@ -439,6 +445,8 @@ def benchmark(recommenders: Dict[str, BanditRecommender],
             # Append
             recommendations_list.append(recommendations)
             metrics_list.append(metrics)
+
+            i += 1
 
         return recommendations_list, metrics_list
 
@@ -458,7 +466,8 @@ def _bench(recommenders: Dict[str, BanditRecommender],
            user_id_col: str = Constants.user_id,
            item_id_col: str = Constants.item_id,
            response_col: str = Constants.response,
-           batch_size: int = 100000) -> Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]]:
+           batch_size: int = 100000,
+           verbose: bool = False) -> Tuple[Dict[str, pd.DataFrame], Dict[str, Dict[str, float]]]:
 
     # Import data
     train_data_df, item_list, user_features_df, \
@@ -477,11 +486,15 @@ def _bench(recommenders: Dict[str, BanditRecommender],
     recommendations = dict()
     rec_metrics = dict()
     for name, recommender in recommenders.items():
+        if verbose:
+            print(f'>>> {name}')
+            print('Running...')
 
         # Copy recommender
         rec = deepcopy(recommender)
 
         # Train
+        t0 = time()
         train(
             recommender=rec,
             data=train_data_df,
@@ -516,6 +529,8 @@ def _bench(recommenders: Dict[str, BanditRecommender],
         cm = CombinedMetrics(*metrics)
         rec_metrics[name] = cm.get_score(test_data_df.rename(columns={response_col: Constants.score}),
                                          recommendations[name])
+        if verbose:
+            print(f"Done: {(time() - t0) / 60:.2f} minutes \n")
 
     return recommendations, rec_metrics
 

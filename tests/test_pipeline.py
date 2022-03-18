@@ -9,6 +9,7 @@ import os
 import tempfile
 
 import pandas as pd
+from mabwiser.linear import _Linear
 
 from mab2rec import BanditRecommender, LearningPolicy, NeighborhoodPolicy
 from mab2rec.pipeline import train, score, benchmark
@@ -46,6 +47,14 @@ class TrainTest(BaseTest):
         for cp in self.nps:
             rec = BanditRecommender(self.lps[0], cp)
             train(rec, train_data_df, user_features_df)
+
+    def test_lingreedy_train(self):
+        rec = BanditRecommender(LearningPolicy.LinGreedy())
+        train(rec, train_data_df, user_features_df)
+        self.assertTrue(isinstance(rec.mab._imp, _Linear))
+        self.assertEqual(len(rec.mab._imp.arm_to_model), 201)
+        self.assertAlmostEqual(rec.mab._imp.arm_to_model[427].beta[0], 0.19919595422109415)
+        self.assertAlmostEqual(rec.mab._imp.arm_to_model[173].beta[0], -0.23409821140400933)
 
     def test_train_twice(self):
         # First train
@@ -236,6 +245,23 @@ class ScoreTest(BaseTest):
             self.assertEqual(df.shape[1], 3)
             self.assertEqual(df.ndim, 2)
             cp_prev = deepcopy(cp)
+
+    def test_lingreedy_score(self):
+        rec = BanditRecommender(LearningPolicy.LinGreedy(l2_lambda=1000))
+        train(rec, train_data_df, user_features_df)
+        df = score(rec, test_data_df, user_features_df)
+        score_dict = df.head().to_dict()
+        self.assertDictEqual(score_dict['user_id'], {0: 259, 1: 259, 2: 259, 3: 259, 4: 259})
+        self.assertDictEqual(score_dict['item_id'], {0: 50, 1: 127, 2: 313, 3: 56, 4: 174},)
+        self.assertDictEqual(score_dict['score'], {0: 0.5481800084403381, 1: 0.533300457736932, 2: 0.5318001465799647,
+                                                   3: 0.5313858071529368, 4: 0.531052100344854},)
+
+    def test_learning_policy_no_features(self):
+        rec = BanditRecommender(LearningPolicy.EpsilonGreedy())
+        train(rec, train_data_df)
+        df = score(rec, test_data_df)
+        self.assertEqual(df.shape[1], 3)
+        self.assertEqual(df.ndim, 2)
 
     def test_load_from_pickle(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
