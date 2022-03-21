@@ -95,7 +95,7 @@ Mab2Rec is built on top of several other open-source software from the AI Center
 
 ## Installation
 
-Mab2Rec can be installed from PyPI using `pip install mab2rec`. It requires Python 3.6+. 
+Mab2Rec can be installed from PyPI using `pip install mab2rec`. It requires Python 3.7+. 
  
 ### Install from source code
 
