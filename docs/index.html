@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mab2Rec: Multi-Armed Bandits Recommender &mdash; Mab2Rec 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> Mab2Rec
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Mab2Rec Public API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Mab2Rec</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Mab2Rec: Multi-Armed Bandits Recommender</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mab2rec-multi-armed-bandits-recommender">
+<h1>Mab2Rec: Multi-Armed Bandits Recommender<a class="headerlink" href="#mab2rec-multi-armed-bandits-recommender" title="Permalink to this headline"></a></h1>
+<p>Mab2Rec is a Python library for building bandit-based recommendation algorithms. It supports <strong>context-free</strong>, <strong>parametric</strong>
+and <strong>non-parametric</strong> <strong>contextual</strong> bandit models powered by <a class="reference external" href="https://github.com/fidelity/mabwiser">MABWiser</a> and
+fairness and recommenders evaluations powered by <a class="reference external" href="https://github.com/fidelity/jurity">Jurity</a>.
+It supports <a class="reference external" href="https://github.com/fidelity/mabwiser#available-bandit-policies">all bandit policies available in MABWiser</a>.
+The library is designed with rapid experimentation in mind, follows the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008">PEP-8 standards</a> and is tested heavily.</p>
+<p>Mab2Rec and several of the open-source software it is built on is developed by the Artificial Intelligence Center at Fidelity Investments, including:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/fidelity/mabwiser">MABWiser</a> to create multi-armed bandit recommendation algorithms (<a class="reference external" href="https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214">IJAIT’21</a>, <a class="reference external" href="https://ieeexplore.ieee.org/document/8995418">ICTAI’19</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/fidelity/textwiser">TextWiser</a> to create item representations via text featurization (<a class="reference external" href="https://ojs.aaai.org/index.php/AAAI/article/view/17814">AAAI’21</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/fidelity/selective">Selective</a> to create user representations via feature selection.</p></li>
+<li><p><a class="reference external" href="https://github.com/fidelity/seq2pat">Seq2Pat</a> to enhance users representations via sequential pattern mining (<a class="reference external" href="https://aaai.org/Conferences/AAAI-22/">AAAI’22</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/fidelity/jurity">Jurity</a> to evaluate recommendations including fairness metrics (<a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9680169">ICMLA’21</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/fidelity/spock">Spock</a> to define, manage, and use parameter configurations.</p></li>
+</ul>
+<p>An introduction to <strong>content- and context-aware</strong> recommender systems and an overview of the building blocks of the library is <a class="reference external" href="https://www.youtube.com/watch?v=54d_YUalvOA">presented at All Things Open 2021</a>.</p>
+</section>
+<section id="quick-start">
+<span id="quick"></span><h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<section id="individual-recommender">
+<h2>Individual Recommender<a class="headerlink" href="#individual-recommender" title="Permalink to this headline"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of how to train an individual recommender to generate top-4 recommendations</span>
+
+<span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">mab2rec</span> <span class="kn">import</span> <span class="n">BanditRecommender</span><span class="p">,</span> <span class="n">LearningPolicy</span>
+<span class="kn">from</span> <span class="nn">mab2rec.pipeline</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">score</span>
+
+<span class="c1"># LinGreedy recommender to select top-4 items with 10% random exploration</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">LinGreedy</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Train on (user, item, response) interactions in train data using user features</span>
+<span class="n">train</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;data/data_train.csv&#39;</span><span class="p">,</span>
+      <span class="n">user_features</span><span class="o">=</span><span class="s1">&#39;data/features_user.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Score recommendations for users in test data. The output df holds</span>
+<span class="c1"># user_id, item_id, score columns for every test user for top-k items</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;data/data_test.csv&#39;</span><span class="p">,</span>
+           <span class="n">user_features</span><span class="o">=</span><span class="s1">&#39;data/features_user.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-recommenders">
+<h2>Multiple Recommenders<a class="headerlink" href="#multiple-recommenders" title="Permalink to this headline"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of how to benchmark multiple bandit algorithms to generate top-4 recommendations</span>
+
+<span class="kn">from</span> <span class="nn">mab2rec</span> <span class="kn">import</span> <span class="n">BanditRecommender</span><span class="p">,</span> <span class="n">LearningPolicy</span>
+<span class="kn">from</span> <span class="nn">mab2rec.pipeline</span> <span class="kn">import</span> <span class="n">benchmark</span>
+<span class="kn">from</span> <span class="nn">jurity.recommenders</span> <span class="kn">import</span> <span class="n">BinaryRecoMetrics</span><span class="p">,</span> <span class="n">RankingRecoMetrics</span>
+
+<span class="c1"># Recommenders (many more available)</span>
+<span class="n">recommenders</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Random&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">Random</span><span class="p">()),</span>
+                <span class="s2">&quot;Popularity&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">Popularity</span><span class="p">()),</span>
+                <span class="s2">&quot;LinGreedy&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">LinGreedy</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))}</span>
+
+<span class="c1"># Column names for the response, user, and item id columns</span>
+<span class="n">metric_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;click_column&#39;</span><span class="p">:</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id_column&#39;</span><span class="p">:</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;item_id_column&#39;</span><span class="p">:</span><span class="s1">&#39;item_id&#39;</span><span class="p">}</span>
+
+<span class="c1"># Performance metrics for benchmarking (many more available)</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">top_k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]:</span>
+    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BinaryRecoMetrics</span><span class="o">.</span><span class="n">CTR</span><span class="p">(</span><span class="o">**</span><span class="n">metric_params</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">))</span>
+    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RankingRecoMetrics</span><span class="o">.</span><span class="n">NDCG</span><span class="p">(</span><span class="o">**</span><span class="n">metric_params</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">))</span>
+
+<span class="c1"># Benchmarking with a collection of recommenders and metrics</span>
+<span class="c1"># This returns two dictionaries;</span>
+<span class="c1"># reco_to_results: recommendations for each algorithm on cross-validation data</span>
+<span class="c1"># reco_to_metrics: evaluation metrics for each algorithm</span>
+<span class="n">reco_to_results</span><span class="p">,</span> <span class="n">reco_to_metrics</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span><span class="n">recommenders</span><span class="p">,</span>
+                                             <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span>
+                                             <span class="n">train_data</span><span class="o">=</span><span class="s2">&quot;data/data_train.csv&quot;</span><span class="p">,</span>
+                                             <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                             <span class="n">user_features</span><span class="o">=</span><span class="s2">&quot;data/features_user.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="source-code">
+<h1>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline"></a></h1>
+<p>The source code is hosted on <a class="reference external" href="https://github.com/fidelity/mab2rec">GitHub</a>.</p>
+<aside class="sidebar">
+<p class="sidebar-title">Contents</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#source-code">Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#test-your-setup">Test Your Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrade-the-library">Upgrade the Library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quick.html#individual-recommender">Individual Recommender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick.html#multiple-recommenders">Multiple Recommenders</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-contributions">Code Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation-contributions">Documentation Contributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Mab2Rec Public API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#banditrecommender">BanditRecommender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#learningpolicy">LearningPolicy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#neighborhoodpolicy">NeighborhoodPolicy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-mab2rec.pipeline">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-mab2rec.visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (C), FMR LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
