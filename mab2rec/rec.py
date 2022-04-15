@@ -334,6 +334,9 @@ class BanditRecommender:
             for context_ind, excluded in enumerate(excluded_arms):
                 exclude_mask[context_ind][[arm_to_index[arm] for arm in excluded if arm in arm_to_index]] = True
 
+        # Set excluded item scores to -1, so they automatically get placed lower in best results
+        expectations[exclude_mask] = -1.
+
         # Get best `top_k` results by sorting the expectations
         arm_inds = np.flip(np.argsort(expectations)[:, -self.top_k:], axis=1)
 
