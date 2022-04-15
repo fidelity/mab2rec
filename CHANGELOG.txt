@@ -7,7 +7,7 @@ April, 15, 2022 1.0.1
 -------------------------------------------------------------------------------
 
 Minor:
-- Fix missing top-k recommendations when top messages are excluded
+- Fix missing top-k recommendations when top messages are excluded - thanks @nateewall!
 
 -------------------------------------------------------------------------------
 March, 18, 2022 1.0.0
