@@ -738,5 +738,18 @@ class BanditRecommenderTest(BaseTest):
                                     excluded_arms=[[3], [3]],
                                     top_k=2,
                                     seed=123456)
-        self.assertEqual(results[0], [[2], [1]])
-        self.assertListAlmostEqual(results[1][0], [0.8103388262282213])
+        self.assertEqual(results[0], [[2, 1], [1, 2]])
+        self.assertListAlmostEqual(results[1][0], [0.8103388262282213, 0.7882460646490305])
+
+    def test_recommend_exclusion_replace(self):
+        results, rec = self.predict(arms=[1, 2, 3, 4, 5],
+                                    decisions=[1, 2, 3, 4, 5],
+                                    rewards=[0.9, 0.8, 0.7, 0.6, 0.5],
+                                    learning_policy=LearningPolicy.EpsilonGreedy(epsilon=0.),
+                                    neighborhood_policy=None,
+                                    contexts=[[1, 2], [1, 2]],
+                                    excluded_arms=[[], [1]],
+                                    top_k=4)
+
+        self.assertListEqual(results[0][0], [1, 2, 3, 4])
+        self.assertListEqual(results[0][1], [2, 3, 4, 5])
