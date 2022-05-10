@@ -93,8 +93,7 @@ We provide an extensive tutorial in the [notebooks](notebooks) folder with guide
 
 ## Installation
 
-Mab2Rec can be installed from PyPI using ``pip install mab2rec`` or by building from source by following the instructions
-in our [documentation](https://fidelity.github.io/mab2rec/installation.html).
+Mab2Rec requires **Python 3.7+** and can be installed from PyPI using ``pip install mab2rec`` or by building from source as shown in [installation instructions](https://fidelity.github.io/mab2rec/installation.html).
 
 ## Support
 
