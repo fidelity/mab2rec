@@ -9,6 +9,7 @@ May, 12, 2022 1.0.1
 Minor:
 - Add encodings generation to Seq2Pat section in feature_engineering notebook.
 - Explicitly claim Mab2Rec requires Python 3.7+ for Installation in README.
+- Library source scripts are not updated, thus the pypi version is not changed.
 
 -------------------------------------------------------------------------------
 April, 15, 2022 1.0.1
