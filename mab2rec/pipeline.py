@@ -481,7 +481,7 @@ def _bench(recommenders: Dict[str, BanditRecommender],
                                         user_id_col=user_id_col,
                                         item_id_col=item_id_col,
                                         response_col=response_col)
-    test_data_df = load_response_data(test_data)
+    test_data_df = load_response_data(test_data, user_id_col, item_id_col, response_col)
 
     recommendations = dict()
     rec_metrics = dict()
