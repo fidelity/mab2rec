@@ -238,13 +238,14 @@ def score(recommender: Union[str, BanditRecommender],
     _validate_save(save_file)
 
     # Import data
+    item_list_out = recommender.mab.arms if item_list is None else item_list
     test_data_df, item_list_out, user_features_df, \
         item_to_features, excluded_df = load_data(data=data,
                                                   user_features=user_features,
                                                   user_features_list=user_features_list,
                                                   user_features_dtypes=user_features_dtypes,
                                                   item_features=item_features,
-                                                  item_list=item_list,
+                                                  item_list=item_list_out,
                                                   item_eligibility=item_eligibility,
                                                   user_id_col=user_id_col,
                                                   item_id_col=item_id_col,
