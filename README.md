@@ -20,8 +20,8 @@ Documentation is available at [fidelity.github.io/mab2rec](https://fidelity.gith
 
 ## Usage Patterns
 
-Mab2Rec supports prototyping of **individual** bandit algorithms and benchmarking of **multiple** bandit algorithms. 
-The intended usage for a new user is to experiment with multiple bandits using the tutorial in the [notebooks](notebooks) folder.
+Mab2Rec supports prototyping **individual** bandit algorithms and benchmarking **multiple** bandit algorithms. 
+The best place to start for a new user is to experiment with multiple bandits using the [tutorial notebooks](notebooks).
 
 ## Quick Start
 
