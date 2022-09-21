@@ -10,7 +10,7 @@ Mab2Rec leverages several other open-source software developed at the AI Center 
 * [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418)).
 * [TextWiser](https://github.com/fidelity/textwiser) to create item representations via text featurization ([AAAI'21](https://ojs.aaai.org/index.php/AAAI/article/view/17814)).
 * [Selective](https://github.com/fidelity/selective) to create user representations via feature selection.
-* [Seq2Pat](https://github.com/fidelity/seq2pat) to enhance users representations via sequential pattern mining ([AAAI'22](https://ojs.aaai.org/index.php/AAAI/article/view/21542), [KDF@AAAI'22](https://arxiv.org/abs/2201.09178), [Frontiers'22](https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full).
+* [Seq2Pat](https://github.com/fidelity/seq2pat) to enhance users representations via sequential pattern mining ([AAAI'22](https://ojs.aaai.org/index.php/AAAI/article/view/21542), [KDF@AAAI'22](https://arxiv.org/abs/2201.09178), [Frontiers'22](https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full))
 * [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
 * [Spock](https://github.com/fidelity/spock) to define, manage, and use parameter configurations.
 
