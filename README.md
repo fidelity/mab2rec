@@ -5,7 +5,7 @@
 Mab2Rec is a Python library for building bandit-based recommendation algorithms. It supports **context-free**, **parametric** and **non-parametric** **contextual** bandit models powered by [MABWiser](https://github.com/fidelity/mabwiser) and fairness and recommenders evaluations powered by [Jurity](https://github.com/fidelity/jurity).
 It supports [all bandit policies available in MABWiser](https://github.com/fidelity/mabwiser#available-bandit-policies). The library is designed with rapid experimentation in mind, follows the [PEP-8 standards](https://www.python.org/dev/peps/pep-0008/) and is tested heavily.
 
-Mab2Rec leverages several other open-source software developed at the AI Center at Fidelity:
+Mab2Rec is built on top of several other open-source software developed at the AI Center at Fidelity:
 
 * [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418)).
 * [TextWiser](https://github.com/fidelity/textwiser) to create item representations via text featurization ([AAAI'21](https://ojs.aaai.org/index.php/AAAI/article/view/17814)).
@@ -14,21 +14,21 @@ Mab2Rec leverages several other open-source software developed at the AI Center 
 * [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
 * [Spock](https://github.com/fidelity/spock) to define, manage, and use parameter configurations.
 
-An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is [presented at All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). 
+An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). 
 
 Documentation is available at [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
 
 ## Usage Patterns
 
-Mab2Rec supports prototyping **individual** bandit algorithms and benchmarking **multiple** bandit algorithms. 
-The best place to start for a new user is to experiment with multiple bandits using the [tutorial notebooks](notebooks).
+Mab2Rec supports prototyping with a **single** bandit algorithm or benchmarking with **multiple** bandit algorithms. 
+If you are new user, the best place to start is to experiment with multiple bandits using the [tutorial notebooks](notebooks).
 
 ## Quick Start
 
-### Individual Recommender
+### Single Recommender
 
 ```python
-# Example of how to train an individual recommender to generate top-4 recommendations
+# Example of how to train an singler recommender to generate top-4 recommendations
 
 # Import 
 from mab2rec import BanditRecommender, LearningPolicy
@@ -50,7 +50,7 @@ df = score(rec, data='data/data_test.csv',
 ### Multiple Recommenders
 
 ```python
-# Example of how to benchmark multiple bandit algorithms to generate top-4 recommendations
+# Example of how to benchmark multiple recommenders to generate top-4 recommendations
 
 from mab2rec import BanditRecommender, LearningPolicy
 from mab2rec.pipeline import benchmark
