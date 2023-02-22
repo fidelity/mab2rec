@@ -4,5 +4,5 @@
 
 __author__ = "FMR LLC"
 __email__ = "opensource@fmr.com"
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 __copyright__ = "Copyright (C), FMR LLC"
