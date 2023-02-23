@@ -10,6 +10,7 @@ import tempfile
 
 import pandas as pd
 from mabwiser.linear import _Linear
+from jurity.recommenders import DiversityRecoMetrics
 
 from mab2rec import BanditRecommender, LearningPolicy, NeighborhoodPolicy
 from mab2rec.pipeline import train, score, benchmark
@@ -390,3 +391,25 @@ class BenchmarkTest(BaseTest):
 
         for rec in recommenders.values():
             self.assertTrue(rec.mab is None)
+
+    def test_benchmark_diversity_metrics(self):
+        recommenders = deepcopy(self.recommenders)
+        metrics = []
+        metric_params = {'click_column': Constants.score,
+                         'user_id_column': Constants.user_id,
+                         'item_id_column': Constants.item_id}
+        for k in [3, 5]:
+            metrics.append(DiversityRecoMetrics.InterListDiversity(**metric_params, k=k,
+                                                                   user_sample_size=100))
+            metrics.append(DiversityRecoMetrics.IntraListDiversity(**metric_params, k=k,
+                                                                   user_sample_size=100,
+                                                                   item_features=item_features_df))
+
+        recommendations, rec_metrics = benchmark(recommenders, metrics, train_data, test_data,
+                                                 user_features=user_features_df)
+        self.assertEqual(recommendations.keys(), self.recommenders.keys())
+        self.assertEqual(rec_metrics.keys(), self.recommenders.keys())
+        self.assertAlmostEqual(rec_metrics["Random"]["Inter-List Diversity@3"], 0.9856228956228957)
+        self.assertAlmostEqual(rec_metrics["Random"]["Inter-List Diversity@5"], 0.9749818181818182)
+        self.assertAlmostEqual(rec_metrics["Random"]["Intra-List Diversity@3"], 0.7602157694547105)
+        self.assertAlmostEqual(rec_metrics["Random"]["Intra-List Diversity@5"], 0.7547351779782561)

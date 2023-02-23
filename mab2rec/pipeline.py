@@ -621,8 +621,10 @@ def _validate_bench(recommenders, metrics, train_data, test_data, cv):
                                   RankingRecoMetrics.Recall,
                                   RankingRecoMetrics.NDCG,
                                   RankingRecoMetrics.MAP,
-                                  DiversityRecoMetrics.InterListDiversity)),
-                   TypeError("Evaluation metric values must be BinaryRecoMetrics or RankingRecoMetrics instances."))
+                                  DiversityRecoMetrics.InterListDiversity,
+                                  DiversityRecoMetrics.IntraListDiversity)),
+                   TypeError("Evaluation metric values must be BinaryRecoMetrics, RankingRecoMetrics, "
+                             "or DiversityRecoMetrics instances."))
 
     # Train/test data
     check_true(train_data is not None, ValueError("Train data cannot be none."))
