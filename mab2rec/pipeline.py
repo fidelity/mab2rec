@@ -9,7 +9,7 @@ from typing import Dict, List, NoReturn, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from jurity.recommenders import CombinedMetrics, BinaryRecoMetrics, RankingRecoMetrics
+from jurity.recommenders import CombinedMetrics, BinaryRecoMetrics, RankingRecoMetrics, DiversityRecoMetrics
 from sklearn.model_selection import GroupKFold
 from mabwiser.utils import check_true, Arm
 
@@ -620,8 +620,11 @@ def _validate_bench(recommenders, metrics, train_data, test_data, cv):
                                   RankingRecoMetrics.Precision,
                                   RankingRecoMetrics.Recall,
                                   RankingRecoMetrics.NDCG,
-                                  RankingRecoMetrics.MAP)),
-                   TypeError("Evaluation metric values must be BinaryRecoMetrics or RankingRecoMetrics instances."))
+                                  RankingRecoMetrics.MAP,
+                                  DiversityRecoMetrics.InterListDiversity,
+                                  DiversityRecoMetrics.IntraListDiversity)),
+                   TypeError("Evaluation metric values must be BinaryRecoMetrics, RankingRecoMetrics, "
+                             "or DiversityRecoMetrics instances."))
 
     # Train/test data
     check_true(train_data is not None, ValueError("Train data cannot be none."))

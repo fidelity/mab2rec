@@ -10,6 +10,8 @@ Major:
 - Updated requirements to use mabwiser>=2.7 to benefit from enhancements,
   including vectorized predict for Linear policies and tracking of arm status.
 - Fixed tests due to changes in random seeding for Linear policies.
+Minor:
+- Added Diversity metrics to available MAB evaluation metrics.
 
 -------------------------------------------------------------------------------
 August, 16, 2022 1.0.3
