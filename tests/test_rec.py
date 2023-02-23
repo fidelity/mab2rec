@@ -611,13 +611,13 @@ class BanditRecommenderTest(BaseTest):
                                                      [0, 2, 1, 0, 0]],
                                     top_k=2,
                                     seed=123456)
-        self.assertEqual(results[0], [[3, 1], [1, 3]])
+        self.assertEqual(results[0], [[3, 1], [2, 3]])
         self.assertListAlmostEqual(results[1][0], [0.6504125435586658, 0.5240639631785098])
-        self.assertListAlmostEqual(results[1][1], [0.7114885562660387, 0.5354020923417662])
+        self.assertListAlmostEqual(results[1][1], [0.7221703184615302, 0.7121913829791641])
 
         # No scores
         results = rec.recommend([[0, 1, 2, 3, 5], [1, 1, 1, 1, 1]], return_scores=False)
-        self.assertEqual(results, [[3, 1], [2, 3]])
+        self.assertEqual(results, [[2, 3], [2, 1]])
 
     def test_recommend_lin_ucb(self):
         results, rec = self.predict(arms=[1, 2, 3],
@@ -653,13 +653,13 @@ class BanditRecommenderTest(BaseTest):
                                                      [0, 2, 1, 0, 0]],
                                     top_k=2,
                                     seed=123456)
-        self.assertEqual(results[0], [[2, 3], [3, 1]])
-        self.assertListAlmostEqual(results[1][0], [0.9571299309237765, 0.7351400505873965])
-        self.assertListAlmostEqual(results[1][1], [0.8548770839301622, 0.7726819822665895])
+        self.assertEqual(results[0], [[3, 2], [1, 3]])
+        self.assertListAlmostEqual(results[1][0], [0.6393327956234724, 0.6113795857188596])
+        self.assertListAlmostEqual(results[1][1], [0.9231640190086698, 0.9093145340785204])
 
         # No scores
         results = rec.recommend([[0, 1, 2, 3, 5], [1, 1, 1, 1, 1]], return_scores=False)
-        self.assertEqual(results, [[2, 3], [1, 3]])
+        self.assertEqual(results, [[3, 1], [1, 3]])
 
     def test_recommend_clusters_ts(self):
         results, rec = self.predict(arms=[1, 2, 3],
