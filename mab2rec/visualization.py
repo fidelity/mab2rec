@@ -445,7 +445,7 @@ def plot_personalization_heatmap(recommendation_results: Union[Dict[str, pd.Data
 
         # Calculate percentage of recommendations by item within each cluster
         df = rec_sorted_df.groupby(['cluster', item_id_col]).size()
-        df = df.groupby(level=0).apply(lambda x: x / float(x.sum())).droplevel(level=0).reset_index()
+        df = df.groupby(level=0, group_keys=False).apply(lambda x: x / float(x.sum())).reset_index()
         df = df.pivot(index=item_id_col, columns='cluster').fillna(0)
         df.columns = df.columns.droplevel()
         df.sort_index(inplace=True)
