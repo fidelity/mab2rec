@@ -14,7 +14,7 @@ Mab2Rec is built on top of several other open-source software developed at the A
 * [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
 * [Spock](https://github.com/fidelity/spock) to define, manage, and use parameter configurations.
 
-An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). There is also corresponding [blogpost](https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/) as a starting point for practioners to build and deploying bandit-based recommenders using Mab2Rec.
+An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). There is also a corresponding [blogpost](https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/) as a starting point for practioners to build and deploying bandit-based recommenders using Mab2Rec.
 
 Documentation is available at [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
 
