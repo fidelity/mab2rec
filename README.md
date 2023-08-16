@@ -12,7 +12,6 @@ Mab2Rec is built on top of several other open-source software developed at the A
 * [Selective](https://github.com/fidelity/selective) to create user representations via feature selection ([CPAIOR'21](https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27), [DSO@IJCAI'21](https://arxiv.org/abs/2112.03105)).
 * [Seq2Pat](https://github.com/fidelity/seq2pat) to create users representations via sequential pattern mining ([AAAI'22](https://ojs.aaai.org/index.php/AAAI/article/view/21542), [KDF@AAAI'22](https://arxiv.org/abs/2201.09178), [Frontiers'22](https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full))
 * [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
-* [Spock](https://github.com/fidelity/spock) to define, manage, and use parameter configurations.
 
 An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). There is also a corresponding [blogpost](https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/) as a starting point for practioners to build and deploy bandit-based recommenders using Mab2Rec.
 

@@ -14,7 +14,6 @@ Mab2Rec and several of the open-source software it is built on is developed by t
 * `Selective <https://github.com/fidelity/selective>`_ to create user representations via feature selection.
 * `Seq2Pat <https://github.com/fidelity/seq2pat>`_ to enhance users representations via sequential pattern mining (`AAAI'22 <https://aaai.org/Conferences/AAAI-22/>`_).
 * `Jurity <https://github.com/fidelity/jurity>`_ to evaluate recommendations including fairness metrics (`ICMLA'21 <https://ieeexplore.ieee.org/abstract/document/9680169>`_).
-* `Spock <https://github.com/fidelity/spock>`_ to define, manage, and use parameter configurations.
 
 An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is `presented at All Things Open 2021 <https://www.youtube.com/watch?v=54d_YUalvOA>`_.
 
