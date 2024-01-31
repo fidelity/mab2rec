@@ -2,7 +2,7 @@
 # Copyright FMR LLC <opensource@fidelity.com>
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Dict, List, NoReturn, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -152,7 +152,7 @@ class BanditRecommender:
         self.mab = None
         self._validate_mab_args()
 
-    def _init(self, arms: List[Union[Arm]]) -> NoReturn:
+    def _init(self, arms: List[Union[Arm]]) -> None:
         """Initializes recommender with given list of arms.
 
         Parameters
@@ -163,11 +163,11 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing
         """
         self.mab = MAB(arms, self.learning_policy, self.neighborhood_policy, self.seed, self.n_jobs, self.backend)
 
-    def add_arm(self, arm: Arm, binarizer=None) -> NoReturn:
+    def add_arm(self, arm: Arm, binarizer=None) -> None:
         """Adds an _arm_ to the list of arms.
 
         Incorporates the arm into the learning and neighborhood policies with no training data.
@@ -181,7 +181,7 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
         if self.mab is None:
             self._init([arm])
@@ -190,7 +190,7 @@ class BanditRecommender:
 
     def fit(self, decisions: Union[List[Arm], np.ndarray, pd.Series],
             rewards: Union[List[Num], np.ndarray, pd.Series],
-            contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None) -> NoReturn:
+            contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None) -> None:
         """Fits the recommender the given *decisions*, their corresponding *rewards* and *contexts*, if any.
         If the recommender arms has not been initialized using the `set_arms`, the recommender arms will be set
         to the list of arms in *decisions*.
@@ -212,7 +212,7 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
         if self.mab is None:
             self._init(np.unique(decisions).tolist())
@@ -220,7 +220,7 @@ class BanditRecommender:
 
     def partial_fit(self, decisions: Union[List[Arm], np.ndarray, pd.Series],
                     rewards: Union[List[Num], np.ndarray, pd.Series],
-                    contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None) -> NoReturn:
+                    contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None) -> None:
         """Updates the recommender with the given *decisions*, their corresponding *rewards* and *contexts*, if any.
 
         Validates arguments and raises exceptions in case there are violations.
@@ -240,7 +240,7 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
         self._validate_mab(is_fit=True)
         self.mab.partial_fit(decisions, rewards, contexts)
@@ -362,7 +362,7 @@ class BanditRecommender:
             else:
                 return recommendations[0]
 
-    def remove_arm(self, arm: Arm) -> NoReturn:
+    def remove_arm(self, arm: Arm) -> None:
         """Removes an _arm_ from the list of arms.
 
         Parameters
@@ -372,12 +372,12 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
         self._validate_mab()
         self.mab.remove_arm(arm)
 
-    def set_arms(self, arms: List[Arm], binarizer=None) -> NoReturn:
+    def set_arms(self, arms: List[Arm], binarizer=None) -> None:
         """Initializes the recommender and sets the recommender with given list of arms.
         Existing arms not in the given list of arms are removed and new arms are incorporated into the learning and
         neighborhood policies with no training data.
@@ -392,7 +392,7 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
 
         # Initialize mab
@@ -412,7 +412,7 @@ class BanditRecommender:
             if new_arm not in self.mab.arms:
                 self.add_arm(new_arm, binarizer)
 
-    def warm_start(self, arm_to_features: Dict[Arm, List[Num]], distance_quantile: float = None) -> NoReturn:
+    def warm_start(self, arm_to_features: Dict[Arm, List[Num]], distance_quantile: float = None) -> None:
         """Warm-start untrained (cold) arms of the multi-armed bandit.
 
         Validates arguments and raises exceptions in case there are violations.
@@ -427,7 +427,7 @@ class BanditRecommender:
 
         Returns
         -------
-        No return.
+        Returns nothing.
         """
         self._validate_mab(is_fit=True)
         self.mab.warm_start(arm_to_features, distance_quantile)

@@ -5,7 +5,7 @@
 import os
 from copy import deepcopy
 from time import time
-from typing import Dict, List, NoReturn, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -33,7 +33,7 @@ def train(recommender: BanditRecommender,
           item_id_col: str = Constants.item_id,
           response_col: str = Constants.response,
           batch_size: int = 100000,
-          save_file: Union[str, bool] = None) -> NoReturn:
+          save_file: Union[str, bool] = None) -> None:
     """
     Trains Recommender.
 
@@ -94,7 +94,7 @@ def train(recommender: BanditRecommender,
 
     Returns
     -------
-    No Return.
+    Returns nothing.
     """
     _validate_recommender(recommender)
     _validate_common_args(data, user_features, user_features_list, user_features_dtypes, item_features, item_list,

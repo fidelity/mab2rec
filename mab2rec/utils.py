@@ -4,7 +4,7 @@
 
 import json
 import pickle
-from typing import Dict, List, NamedTuple, NoReturn, Union
+from typing import Dict, List, NamedTuple, Union
 
 import numpy as np
 import pandas as pd
@@ -396,7 +396,7 @@ def get_exclusion_list(arms, eligible_list):
 
 
 def print_interaction_stats(df: pd.DataFrame, user_id_col: str = Constants.user_id,
-                            item_id_col: str = Constants.item_id, response_col: str = Constants.response) -> NoReturn:
+                            item_id_col: str = Constants.item_id, response_col: str = Constants.response) -> None:
     """
     Print number of rows, number of users, number of items in interaction data.
 
@@ -413,7 +413,7 @@ def print_interaction_stats(df: pd.DataFrame, user_id_col: str = Constants.user_
 
     Returns
     -------
-    No return.
+    Returns nothing.
     """
 
     print(f"Number of rows: {len(df):,}")
@@ -445,7 +445,7 @@ def merge_user_features(responses_df: pd.DataFrame, user_features_df: pd.DataFra
     return responses_df.merge(df, on=user_id_col, how="left")
 
 
-def save_json(obj, json_file) -> NoReturn:
+def save_json(obj, json_file) -> None:
     """
     Save obj as json file.
     """
@@ -453,7 +453,7 @@ def save_json(obj, json_file) -> NoReturn:
         json.dump(obj, f)
 
 
-def save_pickle(obj, pickle_file) -> NoReturn:
+def save_pickle(obj, pickle_file) -> None:
     """
     Save serializable object as pickle file.
     """
