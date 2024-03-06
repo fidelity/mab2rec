@@ -288,7 +288,7 @@ class BanditRecommender:
         return self.mab.predict_expectations(contexts)
 
     def recommend(self, contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None,
-                  excluded_arms: List[List[Arm]] = None, return_scores: bool = False, transform_scores: bool = True) \
+                  excluded_arms: List[List[Arm]] = None, return_scores: bool = False, apply_sigmoid: bool = True) \
             -> Union[Union[List[Arm], Tuple[List[Arm], List[Num]],
                      Union[List[List[Arm]], Tuple[List[List[Arm]], List[List[Num]]]]]]:
         """Generate _top-k_ recommendations based on the expected reward.
@@ -306,7 +306,7 @@ class BanditRecommender:
             List of list of arms to exclude from recommended arms.
         return_scores : bool, default=False
             Return score for each recommended item.
-        transform_scores : bool, default=True
+        apply_sigmoid : bool, default=True
             Whether to apply sigmoid transformation to scores before ranking.
 
         Returns
@@ -324,7 +324,7 @@ class BanditRecommender:
             expectations = self.mab.predict_expectations(contexts)
 
         # Take sigmoid of expectations so that values are between 0 and 1
-        if transform_scores:
+        if apply_sigmoid:
             expectations = expit(pd.DataFrame(expectations)[self.mab.arms].values)
         else:
             expectations = pd.DataFrame(expectations)[self.mab.arms].values
