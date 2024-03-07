@@ -288,7 +288,7 @@ class BanditRecommender:
         return self.mab.predict_expectations(contexts)
 
     def recommend(self, contexts: Union[None, List[List[Num]], np.ndarray, pd.Series, pd.DataFrame] = None,
-                  excluded_arms: List[List[Arm]] = None, return_scores: bool = False) \
+                  excluded_arms: List[List[Arm]] = None, return_scores: bool = False, apply_sigmoid: bool = True) \
             -> Union[Union[List[Arm], Tuple[List[Arm], List[Num]],
                      Union[List[List[Arm]], Tuple[List[List[Arm]], List[List[Num]]]]]]:
         """Generate _top-k_ recommendations based on the expected reward.
@@ -306,6 +306,8 @@ class BanditRecommender:
             List of list of arms to exclude from recommended arms.
         return_scores : bool, default=False
             Return score for each recommended item.
+        apply_sigmoid : bool, default=True
+            Whether to apply sigmoid transformation to scores before ranking.
 
         Returns
         -------
@@ -315,15 +317,17 @@ class BanditRecommender:
         self._validate_get_rec(contexts, excluded_arms)
 
         # Get predicted expectations
-        if contexts is None:
-            num_contexts = 1
+        num_contexts = len(contexts) if contexts is not None else 1
+        if num_contexts == 1:
             expectations = [self.mab.predict_expectations(contexts)]
         else:
-            num_contexts = len(contexts)
             expectations = self.mab.predict_expectations(contexts)
 
         # Take sigmoid of expectations so that values are between 0 and 1
-        expectations = expit(pd.DataFrame(expectations)[self.mab.arms].values)
+        if apply_sigmoid:
+            expectations = expit(pd.DataFrame(expectations)[self.mab.arms].values)
+        else:
+            expectations = pd.DataFrame(expectations)[self.mab.arms].values
 
         # Create an exclusion mask, where exclusion_mask[context_ind][arm_ind] denotes if the arm with the
         # index arm_ind was excluded for context with the index context_ind.

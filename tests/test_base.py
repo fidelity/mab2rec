@@ -81,6 +81,7 @@ class BaseTest(unittest.TestCase):
                                            NeighborhoodPolicy.TreeBandit] = None,
                 context_history: Union[None, List[Num], List[List[Num]], np.ndarray, pd.DataFrame, pd.Series] = None,
                 contexts: Union[None, List[Num], List[List[Num]], np.ndarray, pd.DataFrame, pd.Series] = None,
+                apply_sigmoid: bool = True,
                 excluded_arms: List[List[Arm]] = None,
                 warm_start: bool = False,
                 arm_to_features: Dict[Arm, List[Num]] = None,
@@ -103,7 +104,7 @@ class BaseTest(unittest.TestCase):
             rec.warm_start(arm_to_features, distance_quantile=0.5)
 
         # Run
-        recommendations = rec.recommend(contexts, excluded_arms, return_scores=True)
+        recommendations = rec.recommend(contexts, excluded_arms, return_scores=True, apply_sigmoid=apply_sigmoid)
 
         return recommendations, rec
 
