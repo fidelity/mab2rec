@@ -12,4 +12,5 @@ In the **extended** folder we include additional datasets relevant to more advan
 
 ### Article Recommendation 
 
-If you are interested to explore a larger dataset based on article recommendation as used in [[KDD 2023] Verma, Ghanshyam, et al. "Empowering recommender systems using automatically generated Knowledge Graphs and Reinforcement Learning."](https://arxiv.org/abs/2307.04996), you can [download](https://github.com/fidelity/mab2rec/releases/download/1.2.1/data.zip) it and try out different Mab2Rec algorithms.
+If you are interested to explore a larger dataset based on article recommendation as used in [[ArXiv 24] Kadıoğlu, Serdar, et al. "The Design and Organization of Educational Competitions with Anonymous and Real-Time Leaderboards in Academic and Industrial Settings"](https://arxiv.org/abs/2402.07936), [[KDD 2023] Verma, Ghanshyam, et al. "Empowering recommender systems using automatically generated Knowledge Graphs and Reinforcement Learning."](https://arxiv.org/abs/2307.04996), you can [download](https://github.com/fidelity/mab2rec/releases/download/1.2.1/data.zip) it and try out different Mab2Rec algorithms.
+
