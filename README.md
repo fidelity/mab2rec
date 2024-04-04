@@ -2,7 +2,7 @@
 
 # Mab2Rec: Multi-Armed Bandits Recommender 
 
-Mab2Rec([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python library for building bandit-based recommendation algorithms. It supports **context-free**, **parametric** and **non-parametric** **contextual** bandit models powered by [MABWiser](https://github.com/fidelity/mabwiser) and fairness and recommenders evaluations powered by [Jurity](https://github.com/fidelity/jurity).
+Mab2Rec ([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python library for building bandit-based recommendation algorithms. It supports **context-free**, **parametric** and **non-parametric** **contextual** bandit models powered by [MABWiser](https://github.com/fidelity/mabwiser) and fairness and recommenders evaluations powered by [Jurity](https://github.com/fidelity/jurity).
 The library is designed with rapid experimentation in mind, follows the [PEP-8 standards](https://www.python.org/dev/peps/pep-0008/), and is tested heavily.
 
 Mab2Rec is built on top of several other open-source software developed at the AI Center at Fidelity:
