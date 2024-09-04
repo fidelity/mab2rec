@@ -93,7 +93,7 @@ class VisualizationTest(BaseTest):
     def test_plot_personalization_heatmap(self, mock_show):
         # Create clusters based on user features
         X = user_features_df.iloc[:, 1:]
-        kmeans = KMeans(n_clusters=5, random_state=1652)
+        kmeans = KMeans(n_clusters=5, n_init=10, random_state=1652)
         kmeans.fit(X)
         user_clusters = dict(zip(user_features_df['user_id'], kmeans.labels_))
         cmap = sns.diverging_palette(220, 10, as_cmap=True)

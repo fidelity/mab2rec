@@ -7,6 +7,7 @@ February, 22, 2024 1.3.1
 -------------------------------------------------------------------------------
 Minor:
 - Updated requirements to use mabwiser>=2.7.4 to reflect change from np.Inf to np.inf in mabwiser.
+- Fixed default KMeans n_init parameters in tests instead of using 'auto' used in scikit-learn>=1.4
 
 -------------------------------------------------------------------------------
 February, 22, 2024 1.3.0
