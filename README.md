@@ -9,9 +9,9 @@ Mab2Rec is built on top of several other open-source software developed at the A
 
 * [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([Bridge@AAAI'24](http://osullivan.ucc.ie/CPML2024/papers/06.pdf), [TMLR'22](https://openreview.net/pdf?id=sX9d3gfwtE), [IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418)).
 * [TextWiser](https://github.com/fidelity/textwiser) to create item representations via text featurization ([AAAI'21](https://ojs.aaai.org/index.php/AAAI/article/view/17814)).
-* [Selective](https://github.com/fidelity/selective) to create user representations via feature selection ([CPAIOR'21](https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27), [DSO@IJCAI'21](https://arxiv.org/abs/2112.03105)).
+* [Selective](https://github.com/fidelity/selective) to create user representations via feature selection ([AMAI'24](https://link.springer.com/article/10.1007/s10472-024-09941-x), [CPAIOR'21](https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27), [DSO@IJCAI'21](https://arxiv.org/abs/2112.03105)).
 * [Seq2Pat](https://github.com/fidelity/seq2pat) to create user representations via sequential pattern mining ([AI Magazine'23](https://onlinelibrary.wiley.com/doi/epdf/10.1002/aaai.12081), [AAAI'22](https://ojs.aaai.org/index.php/AAAI/article/view/21542), [Bridge@AAAI'23](http://osullivan.ucc.ie/CPML2023/submissions/09.pdf), [Frontiers'22](https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full), [KDF@AAAI'22](https://arxiv.org/abs/2201.09178), [CMU Blog Post](https://www.cmu.edu/tepper/news/stories/2023/may/fidelity-ai.html))
-* [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([LION'23](https://link.springer.com/chapter/10.1007/978-3-031-44505-7_29), [CIKM'22](https://ceur-ws.org/Vol-3318/short6.pdf), [ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
+* [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ACM'24](https://dl.acm.org/doi/10.1145/3700145), [LION'23](https://link.springer.com/chapter/10.1007/978-3-031-44505-7_29), [CIKM'22](https://ceur-ws.org/Vol-3318/short6.pdf), [ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
 
 An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [AAAI 2024](https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems) and [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). There is a corresponding [blogpost](https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/) to serve as a starting point for practioners to build and deploy bandit-based recommenders using Mab2Rec.
 
@@ -93,6 +93,23 @@ We provide extensive tutorials in the [notebooks](notebooks) folder with guideli
 ## Installation
 
 Mab2Rec requires **Python 3.8+** and can be installed from PyPI using ``pip install mab2rec`` or by building from source as shown in [installation instructions](https://fidelity.github.io/mab2rec/installation.html).
+
+## Citation
+
+If you use Mab2Rec in a publication, please cite it as:
+
+```bibtex
+    @inproceedings{DBLP:conf/aaai/KadiogluK24,
+      author       = {Serdar Kadioglu and Bernard Kleynhans},
+      title        = {Building Higher-Order Abstractions from the Components of Recommender Systems},
+      booktitle    = {Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI} 2024, Thirty-Sixth Conference on Innovative Applications of Artificial Intelligence, {IAAI} 2024, Fourteenth Symposium on Educational Advances in Artificial Intelligence, {EAAI} 2014, February 20-27, 2024, Vancouver, Canada},
+      pages        = {22998--23004},
+      publisher    = {{AAAI} Press},
+      year         = {2024},
+      url          = {https://doi.org/10.1609/aaai.v38i21.30341},
+      doi          = {10.1609/AAAI.V38I21.30341}
+    }
+```
 
 ## Support
 
