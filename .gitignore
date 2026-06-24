@@ -62,3 +62,7 @@ coverage.xml
 
 # Documentation
 docsrc/_build/
+docs/.doctrees/
+docs/_build/
+*.doctree
+environment.pickle

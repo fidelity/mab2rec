@@ -1,222 +1,1986 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mab2Rec: Bandit-based Recommenders</title>
+  <meta name="description" content="Mab2Rec: A suite of bandit-based recommender systems, datasets, and models for personalized recommendations.">
+  <meta name="keywords" content="Mab2Rec, multi-armed bandits, personalization, recommender systems, machine learning, AI, Fidelity, Serdar Kadioglu">
+  <meta name="author" content="Serdar Kadıoğlu">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mab2Rec: Multi-Armed Bandits Recommender &mdash; Mab2Rec 1.2.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" /> 
+  <meta property="og:title" content="Mab2Rec: Bandit-based Recommenders">
+  <meta property="og:description" content="Mab2Rec: A suite of bandit-based recommender systems, datasets, and models for personalized recommendations.">
+  <meta property="og:type" content="article">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mab2Rec: Bandit-based Recommenders">
+  <meta name="twitter:description" content="Mab2Rec: A suite of bandit-based recommender systems, datasets, and models for personalized recommendations.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --paper: #faf9f7;
+      --warm: #f5f0ea;
+      --accent: #c0392b;
+      --accent-soft: #e74c3c;
+      --teal: #16a085;
+      --teal-soft: #1abc9c;
+      --blue: #2471a3;
+      --blue-soft: #2e86c1;
+      --gold: #d4a017;
+      --muted: #6b7280;
+      --border: #e2ddd5;
+      --card-bg: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+      --radius: 10px;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    /* Anchor offset for sticky nav */
+    [id] {
+      scroll-margin-top: 80px;
+    }
+
+    body {
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250,249,247,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    nav .nav-brand {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.03em;
+      text-decoration: none;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    nav .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      background: linear-gradient(175deg, var(--paper) 0%, var(--warm) 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192,57,43,0.04), transparent),
+                  radial-gradient(ellipse 60% 50% at 80% 100%, rgba(22,160,133,0.04), transparent);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(192,57,43,0.07);
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 1.5rem;
+      font-weight: 300;
+    }
+    .hero .authors {
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+    .hero .authors a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed var(--border);
+      transition: border-color 0.2s;
+    }
+    .hero .authors a:hover { border-color: var(--accent); }
+    .hero .affiliation {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .hero .affiliation span { display: inline-block; margin: 0 0.5rem; }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.3rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s;
+      border: 1.5px solid transparent;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #2c2c4a;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-outline {
+      background: var(--card-bg);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--ink);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-header h2::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: var(--accent);
+      margin: 0.6rem auto 0;
+      border-radius: 2px;
+    }
+    .section-header p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0.75rem auto 0;
+      font-size: 1rem;
+    }
+
+    /* ── OVERVIEW / PIPELINE ── */
+    .pipeline-visual {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .pipe-step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.25rem;
+      text-align: center;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .pipe-step:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .pipe-step .step-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .pipe-step .step-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.6rem;
+    }
+    .pipe-step h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .pipe-step p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .pipe-step:not(:last-child)::after {
+      display: none;
+    }
+
+    /* ── CORE COMPONENTS INDEX ── */
+    .pub-index {
+      max-width: 780px;
+      margin: 0.9rem auto 0.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+    }
+    .pub-index-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pub-index-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .pub-list {
+      list-style: none;
+      counter-reset: pub-counter;
+    }
+    .pub-list li {
+      counter-increment: pub-counter;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(226,221,213,0.5);
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .pub-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .pub-list li::before {
+      content: counter(pub-counter) ".";
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      min-width: 1.5rem;
+      flex-shrink: 0;
+    }
+    .pub-list .pub-link {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .pub-list .pub-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pub-list .pub-venue {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .pub-list .pub-dot {
+      color: var(--border);
+      margin: 0 0.25rem;
+    }
+    .pub-list .pub-arxiv {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--blue);
+      transition: opacity 0.2s;
+    }
+    .pub-list .pub-arxiv:hover {
+      opacity: 0.7;
+    }
+    .install-top-row {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .install-command {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+    }
+    .install-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(192,57,43,0.08);
+      border-radius: 4px;
+      padding: 0.2rem 0.45rem;
+    }
+    .install-command code {
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      color: var(--ink);
+      background: none;
+      padding: 0;
+    }
+    .downloads-badge {
+      display: inline-flex;
+    }
+    .downloads-badge img {
+      height: 22px;
+      width: auto;
+      display: block;
+      border-radius: 4px;
+    }
+    .downloads-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .card-install {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--ink);
+      background: var(--warm);
+      border: 1px dashed var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.65rem;
+      margin-bottom: 1.1rem;
+    }
+    .card-install i {
+      color: var(--accent);
+      font-size: 0.76rem;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .projects-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .project-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .project-card-inner {
+      display: grid;
+      grid-template-columns: 5px 1fr;
+    }
+    .card-accent {
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .card-accent.red { background: var(--accent); }
+    .card-accent.teal { background: var(--teal); }
+    .card-accent.blue { background: var(--blue); }
+    .card-accent.gold { background: var(--gold); }
+
+    .card-body {
+      padding: 2rem 2.25rem;
+    }
+    .card-body .card-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .card-tag.red { color: var(--accent); background: rgba(192,57,43,0.07); }
+    .card-tag.teal { color: var(--teal); background: rgba(22,160,133,0.07); }
+    .card-tag.blue { color: var(--blue); background: rgba(36,113,163,0.07); }
+    .card-tag.gold { color: #96740b; background: rgba(212,160,23,0.10); }
+
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    .card-header-row h3 {
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      line-height: 1.3;
+    }
+
+    .card-body .card-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+    .card-body .card-venue {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      background: var(--paper);
+      transition: all 0.2s;
+    }
+    .card-link:hover {
+      border-color: var(--ink);
+      background: var(--card-bg);
+    }
+    .card-link i {
+      font-size: 0.85rem;
+    }
+    .card-link .hf-emoji {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+    .card-links .btn {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border-width: 1px;
+      box-shadow: none;
+    }
+    .card-links .btn.btn-outline {
+      background: var(--paper);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .card-links .btn.btn-outline:hover {
+      border-color: var(--ink);
+      background: var(--card-bg);
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ── ANCHOR / PERMALINK BUTTON ── */
+    .anchor-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      color: var(--border);
+      text-decoration: none;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 0.85rem;
+      position: relative;
+    }
+    .anchor-link:hover {
+      color: var(--accent);
+      background: rgba(192,57,43,0.06);
+    }
+    .anchor-link .anchor-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    .anchor-link:hover .anchor-tooltip {
+      opacity: 1;
+    }
+    .anchor-link .anchor-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--ink);
+    }
+
+    /* ── HASH HIGHLIGHT (when arriving via anchor) ── */
+    @keyframes anchorHighlight {
+      0% { box-shadow: 0 0 0 0 rgba(192,57,43,0.3); }
+      40% { box-shadow: 0 0 0 6px rgba(192,57,43,0.15); }
+      100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
+    }
+    .anchor-highlight {
+      animation: anchorHighlight 1.8s ease-out;
+    }
+    .event-chip.anchor-highlight {
+      animation: anchorHighlight 1.8s ease-out;
+    }
+
+    /* ── MODELS TABLE ── */
+    .models-section {
+      background: var(--warm);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      margin-top: 1.5rem;
+    }
+    .models-section h4 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+    .model-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .model-chip:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+    .models-section-gold .model-chip:hover {
+      border-color: var(--gold);
+    }
+    .model-chip .chip-icon {
+      font-size: 1.1rem;
+    }
+    .model-chip .chip-size {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: var(--warm);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* ── EVENTS GRID ── */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.75rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .event-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .event-chip:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+    .event-chip.disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .event-chip.disabled:hover {
+      border-color: var(--border);
+      box-shadow: none;
+      transform: none;
+    }
+    .event-chip i {
+      font-size: 0.9rem;
+      color: var(--accent);
+      width: 1.1rem;
+      text-align: center;
+    }
+    .event-chip .event-venue {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: #fff;
+      background: var(--accent);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    /* Anchor icon inside event chips */
+    .event-anchor {
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 0.2s;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .event-chip:hover .event-anchor {
+      opacity: 1;
+    }
+    .event-anchor:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* ── ABSTRACT ── */
+    .abstract-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 0.98rem;
+      line-height: 1.85;
+      color: #374151;
+    }
+
+    /* ── BIBTEX ── */
+    .bibtex-block {
+      background: var(--ink);
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      position: relative;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .bibtex-block .copy-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #e2e8f0;
+      padding: 0.35rem 0.75rem;
+      border-radius: 5px;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bibtex-block .copy-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ── INLINE BIBTEX (Collapsible) ── */
+    .bibtex-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      background: var(--paper);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .bibtex-toggle:hover {
+      border-color: var(--ink);
+      background: var(--card-bg);
+    }
+    .bibtex-toggle i {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+    .bibtex-toggle.active i {
+      transform: rotate(180deg);
+    }
+    .quickstart-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      background: var(--paper);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quickstart-toggle:hover {
+      border-color: var(--ink);
+      background: var(--card-bg);
+    }
+    .quickstart-toggle i {
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+    .quickstart-toggle.active i {
+      transform: rotate(180deg);
+    }
+    .quickstart-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .quickstart-primary:hover {
+      background: #a23326;
+      border-color: #a23326;
+      color: #fff;
+    }
+    .quickstart-inline {
+      display: none;
+      margin-top: 1rem;
+      background: var(--ink);
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      position: relative;
+    }
+    .quickstart-inline.active {
+      display: block;
+    }
+    .quickstart-inline .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #e2e8f0;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .quickstart-inline .copy-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .quickstart-inline pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .bibtex-inline {
+      display: none;
+      margin-top: 1rem;
+      background: var(--ink);
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      position: relative;
+    }
+    .bibtex-inline.active {
+      display: block;
+    }
+    .bibtex-inline .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #e2e8f0;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bibtex-inline .copy-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .bibtex-inline pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .hero-bibtex {
+      max-width: 820px;
+      margin: 0.85rem auto 0;
+    }
+    .hero-bibtex .bibtex-inline {
+      text-align: left;
+    }
+    .hero-bibtex .quickstart-inline {
+      text-align: left;
+    }
+    .hero-bibtex .bibtex-inline + .bibtex-inline {
+      margin-top: 0.55rem;
+    }
+    .talk-embed {
+      max-width: 680px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-sm);
+    }
+    .talk-embed iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      display: block;
+    }
+    .card-video-embed {
+      max-width: 420px;
+      margin-top: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--card-bg);
+    }
+    .card-video-embed iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      display: block;
+    }
+    .doc-embed {
+      margin: 0.85rem 0 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-sm);
+    }
+    .doc-embed iframe {
+      width: 100%;
+      height: 520px;
+      border: 0;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    footer a:hover { color: var(--ink); }
+
+    /* ── DIVIDERS ── */
+    .section-divider {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section-divider hr {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-inner > * {
+      animation: fadeUp 0.6s ease-out both;
+    }
+    .hero-inner > *:nth-child(2) { animation-delay: 0.08s; }
+    .hero-inner > *:nth-child(3) { animation-delay: 0.14s; }
+    .hero-inner > *:nth-child(4) { animation-delay: 0.2s; }
+    .hero-inner > *:nth-child(5) { animation-delay: 0.26s; }
+    .hero-inner > *:nth-child(6) { animation-delay: 0.32s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .pipeline-visual {
+        grid-template-columns: 1fr 1fr;
+      }
+      .pipe-step:not(:last-child)::after {
+        display: none;
+      }
+      .nav-links { display: none; }
+      .card-body { padding: 1.5rem; }
+      .models-grid {
+        grid-template-columns: 1fr;
+      }
+      .pub-index {
+        padding: 1.25rem 1.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .pipeline-visual {
+        grid-template-columns: 1fr;
+      }
+      section { padding: 2.5rem 1.25rem; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+    }
+  </style>
 </head>
+<body>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> Mab2Rec
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Mab2Rec Public API</a></li>
-</ul>
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">Mab2Rec</a>
+    <ul class="nav-links">
+      <li><a href="#abstract">Overview</a></li>
+<!--      <li><a href="#publications">Papers</a></li>-->
+      <li><a href="#projects">Components</a></li>
+<!--      <li><a href="#talk">Talk</a></li>-->
+      <li><a href="#patents">Patents</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ul>
+  </div>
+</nav>
 
+<!-- ─── HERO ─── -->
+<header class="hero">
+  <div class="hero-inner">
+    <h1>Mab2Rec:<br><span>Multi-Armed Bandits</span> Recommender</h1>
+    <p class="subtitle">Bandit-based recommender systems for enterprise applications with context-free, parametric, and non-parametric contextual policies.
+      Designed for modularity, rapid experimentation, and rigorous evaluation.</p>
+    <p class="authors">
+      <a href="https://skadio.github.io/" target="_blank">Serdar Kadıoğlu</a><sup>1,2</sup> &nbsp;
+      <a href="https://www.linkedin.com/in/bernardkleynhans/">Bernard Kleynhans</a><sup>2</sup> &nbsp;
+      <a href="https://www.linkedin.com/in/xinwangkre/">Xin Wang</a><sup>2</sup>
+    </p>
+    <p class="affiliation">
+      <span><sup>1</sup> Department of Computer Science, Brown University</span>
+      <span><sup>2</sup> AI Center of Excellence, Fidelity Investments</span>
+    </p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" onclick="toggleInlinePanel('quickstart-mab2rec', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+      <a href="https://github.com/fidelity/mab2rec" class="btn btn-outline" target="_blank"><i class="fa-brands fa-github"></i>Code</a>
+      <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
+      <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
+      <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
+      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
+      <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'25</a>
+      <a href="https://ojs.aaai.org/index.php/AAAI/article/view/30341" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'24</a>
+      <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aimag', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AI Magazine'25</button>
+      <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aaai', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AAAI'24</button>
+<!--      <a href="https://huggingface.co/spaces/skadio/text2model-leaderboard" class="btn btn-outline" target="_blank"><span style="font-size:1rem; line-height:1;">🤗</span> Leaderboard</a>-->
+<!--      <a href="https://huggingface.co/spaces/skadio/text2zinc-editor" class="card-link" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Interactive Editor</a>-->
+    </div>
+    <div class="install-top-row">
+      <div class="install-command"><span class="install-label">Install</span><code>pip install mab2rec</code></div>
+      <a href="https://pepy.tech/project/mab2rec" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+        <img src="https://static.pepy.tech/personalized-badge/mab2rec?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Mab2Rec downloads">
+      </a>
+    </div>
+    <div class="hero-bibtex">
+      <div class="quickstart-inline" id="quickstart-mab2rec">
+        <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+        <pre># Example of how to train a single recommender to generate top-4 recommendations
+
+# Import 
+from mab2rec import BanditRecommender, LearningPolicy
+from mab2rec.pipeline import train, score
+
+# LinGreedy recommender to select top-4 items with 10% random exploration 
+rec = BanditRecommender(LearningPolicy.LinGreedy(epsilon=0.1), top_k=4)
+
+# Train on (user, item, response) interactions in train data using user features 
+train(rec, data='data/data_train.csv', 
+      user_features='data/features_user.csv')
+
+# Score recommendations for users in test data. The output df holds 
+# user_id, item_id, score columns for every test user for top-k items 
+df = score(rec, data='data/data_test.csv', 
+           user_features='data/features_user.csv')</pre>
+      </div>
+      <div class="bibtex-inline" id="bib-aaai">
+        <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+        <pre>@inproceedings{mab2rec,
+  title={Building higher-order abstractions from the components of recommender systems},
+  author={Kad{\i}o{\u{g}}lu, Serdar and Kleynhans, Bernard},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={38},
+  number={21},
+  pages={22998--23004},
+  year={2024}
+}</pre>
+      </div>
+      <div class="bibtex-inline" id="bib-aimag">
+        <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+        <pre>@article{kadiouglu2025open,
+  title={Open-source AI at scale: Establishing an enterprise AI strategy through modular frameworks},
+  author={Kad{\i}o{\u{g}}lu, Serdar},
+  journal={AI Magazine},
+  volume={46},
+  number={3},
+  pages={e70032},
+  year={2025},
+  publisher={Wiley Online Library}
+}</pre>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── ABSTRACT ─── -->
+<section id="abstract">
+  <div class="section-header">
+    <h2>Overview</h2>
+  </div>
+  <div class="abstract-box">
+    Mab2Rec is a Python framework for building bandit-based recommendation systems for enterprise applications.
+    It is designed to enable a <strong>modular</strong>, <strong>interoperable</strong>, and <strong>scalable</strong> AI ecosystem for recommender systems, built on robust and reusable open-source components.
+    <div class="pub-index">
+    <div class="pub-index-title"><i class="fa-solid fa-bookmark"></i> Core Reusable Components</div>
+    <ol class="pub-list">
+      <li>
+        <span>
+          <a href="#mabwiser" class="pub-link"><strong>MABWiser:</strong> Multi-armed bandit recommendation algorithms</a>
+        </span>
+      </li>
+      <li>
+        <span>
+          <a href="#textwiser" class="pub-link"><strong>TextWiser:</strong> Item representations via text featurization</a>
+        </span>
+      </li>
+      <li>
+        <span>
+          <a href="#selective" class="pub-link"><strong>Selective:</strong> User representations via feature selection</a>
+        </span>
+      </li>
+      <li>
+        <span>
+          <a href="#seq2pat" class="pub-link"><strong>Seq2Pat:</strong> Interaction behavior via sequential pattern mining</a>
+        </span>
+      </li>
+      <li>
+        <span>
+          <a href="#jurity" class="pub-link"><strong>Jurity:</strong> Recommendation and fairness evaluation metrics</a>
+        </span>
+      </li>
+      <li>
+        <span>
+          <a href="#boolxai" class="pub-link"><strong>BoolXAI:</strong> Explainable AI based on expressive Boolean formulas</a>
+        </span>
+      </li>
+    </ol>
+  </div>
+  </div>
+
+<!--<br>-->
+<!--<strong>Text2Model</strong> formalizes the text‑to‑model translation task and introduces a suite of publicly available modeling copilots using zero‑shot prompting, chain‑of‑thought reasoning, knowledge‑graph representations, grammar‑guided validation, and agentic decomposition. These strategies form a solver‑agnostic pipeline with an online leaderboard for evaluating execution and solution accuracy.-->
+<!--<br>-->
+<!--    <strong>Learn2Zinc</strong> explores whether language models can learn a domain‑specific modeling language through targeted fine‑tuning. Using cross‑model bootstrapping, it teaches small models to generate syntactically valid MiniZinc despite zero pretraining exposure, achieving high execution accuracy while highlighting a persistent gap in deeper constraint‑modeling reasoning.-->
+<!--<br>-->
+<!--<strong>Text2Zinc</strong> provides the first cross‑domain, paradigm- and solver‑agnostic dataset covering both satisfaction and optimization problems. It unifies instances from major OR and CP sources into a consistent schema with curated MiniZinc models, metadata, and an interactive editor with an AI assistant for ongoing curation.-->
+<!--  </div>-->
+</section>
+
+<div class="section-divider"><hr></div>
+
+<section id="featured-paper">
+  <div class="section-header">
+    <h2>Open-Source AI at Scale: <br>Establishing an Enterprise AI Strategy</h2>
+  </div>
+  <div class="doc-embed">
+    <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025 paper"></iframe>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!--&lt;!&ndash; ─── PUBLICATIONS INDEX ─── &ndash;&gt;-->
+<!--<section id="publications" style="padding-bottom: 0;">-->
+<!--  <div class="section-header">-->
+<!--    <h2>Publications</h2>-->
+<!--    <p>Papers and their venues. Click a title to jump to its full resource card below.</p>-->
+<!--  </div>-->
+<!--  <div class="pub-index">-->
+<!--    <div class="pub-index-title"><i class="fa-solid fa-bookmark"></i> Paper Index</div>-->
+<!--    <ol class="pub-list">-->
+<!--      <li>-->
+<!--        <span>-->
+<!--          <a href="#llm-copilots" class="pub-link">Modeling Copilots for Text-to-Model Translation</a>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <span class="pub-venue">INFORMS'26</span>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <a href="https://arxiv.org/abs/2604.12955" class="pub-arxiv" target="_blank">arXiv:2604.12955</a>-->
+<!--        </span>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <span>-->
+<!--          <a href="#learn2zinc" class="pub-link">Fine-tuned MiniZinc Models (Learn2Zinc)</a>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <span class="pub-venue">arXiv'26</span>-->
+<!--        </span>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <span>-->
+<!--          <a href="#text2zinc" class="pub-link">Text2Zinc: A Cross-Domain Dataset for Modeling in MiniZinc</a>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <span class="pub-venue">arXiv'25</span>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <a href="https://arxiv.org/abs/2503.10642" class="pub-arxiv" target="_blank">arXiv:2503.10642</a>-->
+<!--        </span>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <span>-->
+<!--          <a href="#gala" class="pub-link">Gala: Global LLM Agents for Text-to-Model Translation</a>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <span class="pub-venue">arXiv'25</span>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <a href="https://arxiv.org/abs/2509.08970" class="pub-arxiv" target="_blank">arXiv:2509.08970</a>-->
+<!--        </span>-->
+<!--      </li>-->
+<!--      <li>-->
+<!--        <span>-->
+<!--          <a href="#ner4opt" class="pub-link">Ner4Opt: Named Entity Recognition for Optimization Modelling</a>-->
+<!--          <span class="pub-dot">·</span>-->
+<!--          <span class="pub-venue">Constraints'24 · CPAIOR'23 · NeurIPS'22</span>-->
+<!--        </span>-->
+<!--      </li>-->
+<!--    </ol>-->
+<!--  </div>-->
+<!--</section>-->
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects" style="padding-top: 1.5rem;">
+  <div class="section-header">
+    <h2>Modular Architecture</h2>
+    <p>Mab2Rec composes specialized open-source components for recommendation, representation learning, fairness and performance evaluation.</p>
+  </div>
+  <div class="projects-grid">
+
+    <!-- MABWISER -->
+    <div class="project-card" id="mabwiser">
+      <div class="project-card-inner">
+        <div class="card-accent red"></div>
+        <div class="card-body">
+          <div class="card-tag red">Bandit Policies</div>
+          <div class="card-header-row">
+            <h3>MABWiser</h3>
+            <button class="anchor-link" onclick="copyAnchor('mabwiser')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Core engine to create multi-armed bandit recommendation algorithms used by Mab2Rec.</p>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install mabwiser</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-mabwiser', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/mabwiser" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="http://osullivan.ucc.ie/CPML2024/papers/06.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Bridge@AAAI'24</a>
+            <a href="https://arxiv.org/abs/2402.07936" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Arxiv'24</a>
+            <a href="https://openreview.net/pdf?id=sX9d3gfwtE" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> TMLR'22</a>
+            <a href="https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> IJAIT'21</a>
+            <a href="https://link.springer.com/article/10.1007/s41060-020-00241-1" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> JDSA'21</a>
+            <a href="https://ieeexplore.ieee.org/abstract/document/8995445" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ICTAI'19</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="quickstart-inline" id="quickstart-mabwiser">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre># An example that shows how to use the UCB1 learning policy
+# to choose between two arms based on their expected rewards.
+
+# Import MABWiser Library
+from mabwiser.mab import MAB, LearningPolicy, NeighborhoodPolicy
+
+# Data
+arms = ['Arm1', 'Arm2']
+decisions = ['Arm1', 'Arm1', 'Arm2', 'Arm1']
+rewards = [20, 17, 25, 9]
+
+# Model 
+mab = MAB(arms, LearningPolicy.UCB1(alpha=1.25))
+
+# Train
+mab.fit(decisions, rewards)
+
+# Test
+mab.predict()</pre>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@article{mabwiser,
+  title={MABWiser: parallelizable contextual multi-armed bandits},
+  author={Strong, Emily and Kleynhans, Bernard and Kad{\i}{\u{g}}lu, Serdar},
+  journal={International Journal on Artificial Intelligence Tools},
+  volume={30},
+  number={04},
+  pages={2150021},
+  year={2021},
+  publisher={World Scientific}
+}</pre>
+          </div>
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/mabwiser" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/mabwiser?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="MABWiser downloads">
+            </a>
+            <p class="card-venue">Bernard Kleynhands, Emily Strong, Xin Wang, Serdar Kadıoğlu</p>
+          </div>
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Mab2Rec</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Mab2Rec: Multi-Armed Bandits Recommender</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="mab2rec-multi-armed-bandits-recommender">
-<h1>Mab2Rec: Multi-Armed Bandits Recommender<a class="headerlink" href="#mab2rec-multi-armed-bandits-recommender" title="Permalink to this headline"></a></h1>
-<p>Mab2Rec is a Python library for building bandit-based recommendation algorithms. It supports <strong>context-free</strong>, <strong>parametric</strong>
-and <strong>non-parametric</strong> <strong>contextual</strong> bandit models powered by <a class="reference external" href="https://github.com/fidelity/mabwiser">MABWiser</a> and
-fairness and recommenders evaluations powered by <a class="reference external" href="https://github.com/fidelity/jurity">Jurity</a>.
-It supports <a class="reference external" href="https://github.com/fidelity/mabwiser#available-bandit-policies">all bandit policies available in MABWiser</a>.
-The library is designed with rapid experimentation in mind, follows the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008">PEP-8 standards</a> and is tested heavily.</p>
-<p>Mab2Rec and several of the open-source software it is built on is developed by the Artificial Intelligence Center at Fidelity Investments, including:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/fidelity/mabwiser">MABWiser</a> to create multi-armed bandit recommendation algorithms (<a class="reference external" href="https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214">IJAIT’21</a>, <a class="reference external" href="https://ieeexplore.ieee.org/document/8995418">ICTAI’19</a>).</p></li>
-<li><p><a class="reference external" href="https://github.com/fidelity/textwiser">TextWiser</a> to create item representations via text featurization (<a class="reference external" href="https://ojs.aaai.org/index.php/AAAI/article/view/17814">AAAI’21</a>).</p></li>
-<li><p><a class="reference external" href="https://github.com/fidelity/selective">Selective</a> to create user representations via feature selection.</p></li>
-<li><p><a class="reference external" href="https://github.com/fidelity/seq2pat">Seq2Pat</a> to enhance users representations via sequential pattern mining (<a class="reference external" href="https://aaai.org/Conferences/AAAI-22/">AAAI’22</a>).</p></li>
-<li><p><a class="reference external" href="https://github.com/fidelity/jurity">Jurity</a> to evaluate recommendations including fairness metrics (<a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9680169">ICMLA’21</a>).</p></li>
-</ul>
-<p>An introduction to <strong>content- and context-aware</strong> recommender systems and an overview of the building blocks of the library is <a class="reference external" href="https://www.youtube.com/watch?v=54d_YUalvOA">presented at All Things Open 2021</a>.</p>
-</section>
-<section id="quick-start">
-<span id="quick"></span><h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
-<section id="individual-recommender">
-<h2>Individual Recommender<a class="headerlink" href="#individual-recommender" title="Permalink to this headline"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of how to train an individual recommender to generate top-4 recommendations</span>
-
-<span class="c1"># Import</span>
-<span class="kn">from</span> <span class="nn">mab2rec</span> <span class="kn">import</span> <span class="n">BanditRecommender</span><span class="p">,</span> <span class="n">LearningPolicy</span>
-<span class="kn">from</span> <span class="nn">mab2rec.pipeline</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">score</span>
-
-<span class="c1"># LinGreedy recommender to select top-4 items with 10% random exploration</span>
-<span class="n">rec</span> <span class="o">=</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">LinGreedy</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="c1"># Train on (user, item, response) interactions in train data using user features</span>
-<span class="n">train</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;data/data_train.csv&#39;</span><span class="p">,</span>
-      <span class="n">user_features</span><span class="o">=</span><span class="s1">&#39;data/features_user.csv&#39;</span><span class="p">)</span>
-
-<span class="c1"># Score recommendations for users in test data. The output df holds</span>
-<span class="c1"># user_id, item_id, score columns for every test user for top-k items</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;data/data_test.csv&#39;</span><span class="p">,</span>
-           <span class="n">user_features</span><span class="o">=</span><span class="s1">&#39;data/features_user.csv&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="multiple-recommenders">
-<h2>Multiple Recommenders<a class="headerlink" href="#multiple-recommenders" title="Permalink to this headline"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of how to benchmark multiple bandit algorithms to generate top-4 recommendations</span>
-
-<span class="kn">from</span> <span class="nn">mab2rec</span> <span class="kn">import</span> <span class="n">BanditRecommender</span><span class="p">,</span> <span class="n">LearningPolicy</span>
-<span class="kn">from</span> <span class="nn">mab2rec.pipeline</span> <span class="kn">import</span> <span class="n">benchmark</span>
-<span class="kn">from</span> <span class="nn">jurity.recommenders</span> <span class="kn">import</span> <span class="n">BinaryRecoMetrics</span><span class="p">,</span> <span class="n">RankingRecoMetrics</span>
-
-<span class="c1"># Recommenders (many more available)</span>
-<span class="n">recommenders</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Random&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">Random</span><span class="p">()),</span>
-                <span class="s2">&quot;Popularity&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">Popularity</span><span class="p">()),</span>
-                <span class="s2">&quot;LinGreedy&quot;</span><span class="p">:</span> <span class="n">BanditRecommender</span><span class="p">(</span><span class="n">LearningPolicy</span><span class="o">.</span><span class="n">LinGreedy</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))}</span>
-
-<span class="c1"># Column names for the response, user, and item id columns</span>
-<span class="n">metric_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;click_column&#39;</span><span class="p">:</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id_column&#39;</span><span class="p">:</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;item_id_column&#39;</span><span class="p">:</span><span class="s1">&#39;item_id&#39;</span><span class="p">}</span>
-
-<span class="c1"># Performance metrics for benchmarking (many more available)</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">top_k</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]:</span>
-    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BinaryRecoMetrics</span><span class="o">.</span><span class="n">CTR</span><span class="p">(</span><span class="o">**</span><span class="n">metric_params</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">))</span>
-    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RankingRecoMetrics</span><span class="o">.</span><span class="n">NDCG</span><span class="p">(</span><span class="o">**</span><span class="n">metric_params</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">))</span>
-
-<span class="c1"># Benchmarking with a collection of recommenders and metrics</span>
-<span class="c1"># This returns two dictionaries;</span>
-<span class="c1"># reco_to_results: recommendations for each algorithm on cross-validation data</span>
-<span class="c1"># reco_to_metrics: evaluation metrics for each algorithm</span>
-<span class="n">reco_to_results</span><span class="p">,</span> <span class="n">reco_to_metrics</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span><span class="n">recommenders</span><span class="p">,</span>
-                                             <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span>
-                                             <span class="n">train_data</span><span class="o">=</span><span class="s2">&quot;data/data_train.csv&quot;</span><span class="p">,</span>
-                                             <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                                             <span class="n">user_features</span><span class="o">=</span><span class="s2">&quot;data/features_user.csv&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="source-code">
-<h1>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline"></a></h1>
-<p>The source code is hosted on <a class="reference external" href="https://github.com/fidelity/mab2rec">GitHub</a>.</p>
-<aside class="sidebar">
-<p class="sidebar-title">Contents</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#source-code">Source Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#test-your-setup">Test Your Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrade-the-library">Upgrade the Library</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="quick.html">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quick.html#individual-recommender">Individual Recommender</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quick.html#multiple-recommenders">Multiple Recommenders</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Usage Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-contributions">Code Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#documentation-contributions">Documentation Contributions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">Mab2Rec Public API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#banditrecommender">BanditRecommender</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#learningpolicy">LearningPolicy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#neighborhoodpolicy">NeighborhoodPolicy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-mab2rec.pipeline">Pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-mab2rec.visualization">Visualization</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</aside>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-</ul>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
-  <hr/>
+    <!-- TEXTWISER -->
+    <div class="project-card" id="textwiser">
+      <div class="project-card-inner">
+        <div class="card-accent blue"></div>
+        <div class="card-body">
+          <div class="card-tag blue">Item Features</div>
+          <div class="card-header-row">
+            <h3>TextWiser</h3>
+            <button class="anchor-link" onclick="copyAnchor('textwiser')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Text featurization toolkit to create item representations for recommender models.</p>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install textwiser</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-textwiser', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/textwiser" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17814" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'21</a>
+            <a href="https://slideslive.com/38951112/representing-the-unification-of-text-featurization-using-a-contextfree-grammar?ref=account-folder-75501-folders" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Presentation</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="quickstart-inline" id="quickstart-textwiser">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre># Conceptually, TextWiser is composed of an Embedding, potentially with a pretrained model,
+# that can be chained into zero or more Transformations
+from textwiser import TextWiser, Embedding, Transformation, WordOptions, PoolOptions
 
-  <div role="contentinfo">
-    <p>&#169; Copyright Copyright (C), FMR LLC.</p>
-  </div>
+# Data
+documents = ["Some document", "More documents. Including multi-sentence documents."]
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+# Model: TFIDF `min_df` parameter gets passed to sklearn automatically
+emb = TextWiser(Embedding.TfIdf(min_df=1))
 
-</footer>
+# Model: TFIDF followed with an NMF + SVD
+emb = TextWiser(Embedding.TfIdf(min_df=1), [Transformation.NMF(n_components=30), Transformation.SVD(n_components=10)])
+
+# Model: Word2Vec with no pretraining that learns from the input data
+emb = TextWiser(Embedding.Word(word_option=WordOptions.word2vec, pretrained=None), Transformation.Pool(pool_option=PoolOptions.min))
+
+# Model: BERT with the pretrained bert-base-uncased embedding
+emb = TextWiser(Embedding.Word(word_option=WordOptions.bert), Transformation.Pool(pool_option=PoolOptions.first))
+
+# Features
+vecs = emb.fit_transform(documents)</pre>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@inproceedings{textwiser,
+  title={Representing the unification of text featurization using a context-free grammar},
+  author={Kilit{\c{c}}ioglu, Doruk and Kad{\i}{\u{g}}lu, Serdar},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={35},
+  number={17},
+  pages={15439--15445},
+  year={2021}
+}</pre>
+          </div>
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/textwiser" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/textwiser?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="TextWiser downloads">
+            </a>
+            <p class="card-venue">Karthik Uppuluri, Doruk Kilitçioğlu, Serdar Kadıoğlu</p>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- SELECTIVE -->
+    <div class="project-card" id="selective">
+      <div class="project-card-inner">
+        <div class="card-accent teal"></div>
+        <div class="card-body">
+          <div class="card-tag teal">User Features</div>
+          <div class="card-header-row">
+            <h3>Selective</h3>
+            <button class="anchor-link" onclick="copyAnchor('selective')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Feature selection toolkit to create user representations from structured and high-dimensional data.</p>
+          <div class="card-video-embed">
+            <iframe src="https://www.youtube.com/embed/_v-B2nRy79w" title="NVIDIA GTC Invited Talk" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <br>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install selective</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-selective', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/selective" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://link.springer.com/article/10.1007/s10472-024-09941-x" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AMAI'24</a>
+            <a href="https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> CPAIOR'21</a>
+            <a href="https://arxiv.org/abs/2112.03105" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> DSO@IJCAI'21</a>
+            <a href="https://huggingface.co/datasets/skadio/optimized_item_selection" class="card-link" target="_blank"><span class="hf-emoji">🤗</span> Dataset</a>
+            <a href="https://www.youtube.com/watch?v=akMsTAh9ed8&t=1s" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Presentation</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="quickstart-inline" id="quickstart-selective">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre># Import Selective and SelectionMethod
+from sklearn.datasets import fetch_california_housing
+from feature.utils import get_data_label
+from feature.selector import Selective, SelectionMethod
+
+# Data
+data, label = get_data_label(fetch_california_housing())
+
+# Feature selectors from simple to more complex
+selector = Selective(SelectionMethod.Variance(threshold=0.0))
+selector = Selective(SelectionMethod.Correlation(threshold=0.5, method="pearson"))
+selector = Selective(SelectionMethod.Statistical(num_features=3, method="anova"))
+selector = Selective(SelectionMethod.Linear(num_features=3, regularization="none"))
+selector = Selective(SelectionMethod.TreeBased(num_features=3))
+
+# Feature reduction
+subset = selector.fit_transform(data, label)
+print("Reduction:", list(subset.columns))
+print("Scores:", list(selector.get_absolute_scores()))</pre>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@article{selective,
+  title={Integrating optimized item selection with active learning for continuous exploration in recommender systems},
+  author={Kad{\i}{\u{g}}lu, Serdar and Kleynhans, Bernard and Wang, Xin},
+  journal={Annals of Mathematics and Artificial Intelligence},
+  volume={92},
+  number={6},
+  pages={1585--1607},
+  year={2024},
+  publisher={Springer}
+}</pre>
+          </div>
+
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/selective" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/selective?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Selective downloads">
+            </a>
+            <p class="card-venue">Xin Wang, Bernard Kleynhans, Serdar Kadıoğlu</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEQ2PAT -->
+    <div class="project-card" id="seq2pat">
+      <div class="project-card-inner">
+        <div class="card-accent gold"></div>
+        <div class="card-body">
+          <div class="card-tag gold">Sequential Pattern Mining</div>
+          <div class="card-header-row">
+            <h3>Seq2Pat</h3>
+            <button class="anchor-link" onclick="copyAnchor('seq2pat')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Sequential pattern mining toolkit to construct user representations from temporal interaction sequences.</p>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install seq2pat</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-seq2pat', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/seq2pat" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://onlinelibrary.wiley.com/doi/epdf/10.1002/aaai.12081" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'23</a>
+            <a href="http://osullivan.ucc.ie/CPML2023/submissions/09.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Bridge@AAAI'23</a>
+            <a href="https://ojs.aaai.org/index.php/AAAI/article/view/21542" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'22</a>
+            <a href="https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Frontiers'22</a>
+            <a href="https://arxiv.org/abs/2201.09178" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> KDF@AAAI'22</a>
+            <a href="https://www.cmu.edu/tepper/news/stories/2023/may/fidelity-ai.html" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> CMU Blog Post</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="quickstart-inline" id="quickstart-seq2pat">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre># Example to show how to find frequent sequential patterns
+# from a given sequence database subject to constraints
+from sequential.seq2pat import Seq2Pat, Attribute
+
+# Seq2Pat over 3 sequences
+seq2pat = Seq2Pat(sequences=[["A", "A", "B", "A", "D"],
+                             ["C", "B", "A"],
+                             ["C", "A", "C", "D"]])
+
+# Price attribute corresponding to each item
+price = Attribute(values=[[5, 5, 3, 8, 2],
+                          [1, 3, 3],
+                          [4, 5, 2, 1]])
+
+# Average price constraint
+seq2pat.add_constraint(3 &lt;= price.average() &lt;= 4)
+
+# Patterns that occur at least twice (A-D)
+patterns = seq2pat.get_patterns(min_frequency=2)</pre>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@article{seq2pat,
+  title={Seq2Pat: Sequence-to-pattern generation to bridge pattern mining with machine learning},
+  author={Kad{\i}{\u{g}}lu, Serdar and Wang, Xin and Hosseininasab, Amin and van Hoeve, Willem-Jan},
+  journal={AI Magazine},
+  volume={44},
+  number={1},
+  pages={54--66},
+  year={2023},
+  publisher={Wiley Online Library}
+}</pre>
+          </div>
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/seq2pat" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/seq2pat?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Seq2Pat downloads">
+            </a>
+            <p class="card-venue">Xin Wang, Amin Hosseininasab, Willem-Jan van Hoeve, Serdar Kadıoğlu</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JURITY -->
+    <div class="project-card" id="jurity">
+      <div class="project-card-inner">
+        <div class="card-accent blue"></div>
+        <div class="card-body">
+          <div class="card-tag blue">Fairness, Bias & Performance Evaluation</div>
+          <div class="card-header-row">
+            <h3>Jurity</h3>
+            <button class="anchor-link" onclick="copyAnchor('jurity')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Evaluation library for recommendation quality, including ranking, classification, and fairness metrics.</p>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install jurity</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-jurity', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/jurity" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://dl.acm.org/doi/10.1145/3700145" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ACM'24</a>
+            <a href="https://arxiv.org/pdf/2403.12069" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'24</a>
+            <a href="https://link.springer.com/chapter/10.1007/978-3-031-44505-7_29" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> LION'23</a>
+            <a href="https://ceur-ws.org/Vol-3318/short6.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> CIKM'22</a>
+            <a href="https://ieeexplore.ieee.org/abstract/document/9680169" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ICMLA'21</a>
+            <a href="https://www.intel.com/content/www/us/en/developer/articles/community/a-new-approach-for-evaluating-ai-model-fairness.html" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Intel Blog Post</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="quickstart-inline" id="quickstart-jurity">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre># Import binary and multi-class fairness metrics
+from jurity.fairness import BinaryFairnessMetrics, MultiClassFairnessMetrics
+
+# Data
+binary_predictions = [1, 1, 0, 1, 0, 0]
+multi_class_predictions = ["a", "b", "c", "b", "a", "a"]
+multi_class_multi_label_predictions = [["a", "b"], ["b", "c"], ["b"], ["a", "b"], ["c", "a"], ["c"]]
+memberships = [0, 0, 0, 1, 1, 1]
+classes = ["a", "b", "c"]
+
+# Metrics (see also other available metrics)
+metric = BinaryFairnessMetrics.StatisticalParity()
+multi_metric = MultiClassFairnessMetrics.StatisticalParity(classes)
+
+# Scores
+print("Metric:", metric.description)
+print("Lower Bound: ", metric.lower_bound)
+print("Upper Bound: ", metric.upper_bound)
+print("Ideal Value: ", metric.ideal_value)
+print("Binary Fairness score: ", metric.get_score(binary_predictions, memberships))
+print("Multi-class Fairness scores: ", multi_metric.get_scores(multi_class_predictions, memberships))
+print("Multi-class multi-label Fairness scores: ", multi_metric.get_scores(multi_class_multi_label_predictions, memberships))</pre>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@article{jurity,
+  title={Surrogate Modeling to Address the Absence of Protected Membership Attributes in Fairness Evaluation},
+  author={Kadio{\u{g}}lu, Serdar and Thielbar, Melinda},
+  journal={ACM Transactions on Evolutionary Learning},
+  volume={5},
+  number={3},
+  pages={1--25},
+  year={2025},
+  publisher={ACM New York, NY}
+}</pre>
+          </div>
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/jurity" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/jurity?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Jurity downloads">
+            </a>
+            <p class="card-venue">Filip Michalsky, Melinda Thielbar, Serdar Kadıoğlu</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOLXAI -->
+    <div class="project-card" id="boolxai">
+      <div class="project-card-inner">
+        <div class="card-accent teal"></div>
+        <div class="card-body">
+          <div class="card-tag teal">Explainable AI</div>
+          <div class="card-header-row">
+            <h3>BoolXAI</h3>
+            <button class="anchor-link" onclick="copyAnchor('boolxai')" title="Copy link">
+              <i class="fa-solid fa-link"></i>
+              <span class="anchor-tooltip">Copy link</span>
+            </button>
+          </div>
+          <p class="card-desc">Explainable AI based on expressive Boolean formulas.</p>
+          <div class="card-install"><i class="fa-solid fa-terminal"></i> pip install boolxai</div>
+          <div class="card-links">
+            <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-boolxai', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
+            <a href="https://github.com/fidelity/boolxai" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://ojs.aaai.org/index.php/AAAI/article/view/35157" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'25</a>
+            <a href="https://arxiv.org/pdf/2605.12139" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'26</a>
+            <a href="https://www.mdpi.com/2504-4990/5/4/86" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> MAKE'23</a>
+            <a href="https://arxiv.org/pdf/2306.03976" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> arXiv'23</a>
+            <a href="https://nbviewer.org/github/skadio/skadio.github.io/blob/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
+          </div>
+          <div class="quickstart-inline" id="quickstart-boolxai">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>import numpy as np
+from sklearn.metrics import balanced_accuracy_score
+
+from boolxai import BoolXAI, Operator
+
+# Create random toy data for binary classification. X and y must be binary! 
+rng = np.random.default_rng(seed=42)
+X = rng.choice([0, 1], size=(100, 10))
+y = rng.choice([0, 1], size=100)
+
+# Rule classifier with maximum depth, complexity, possible operators
+rule_classifier = BoolXAI.RuleClassifier(max_depth=3,
+                                         max_complexity=6, 
+                                         operators=[Operator.And, Operator.Or, Operator.Choose, Operator.AtMost, Operator.AtLeast],
+                                         random_state=42)
+
+# Learn the best rule
+rule_classifier.fit(X, y)
+
+# Best rule and best score
+best_rule = rule_classifier.best_rule_
+best_score = rule_classifier.best_score_
+print(f"{best_rule=} {best_score=:.2f}")
+
+# The depth of a rule is the number of edges in the longest path from the root to any leaf/literal.
+# The complexity of a rule is the total number of operators and literals.
+print(f"depth={best_rule.depth()} complexity={best_rule.complexity()}")
+
+# Predict and score
+y_pred = rule_classifier.predict(X)
+score = balanced_accuracy_score(y, y_pred)
+print(f"{score=:.2f}")
+
+# It is also possible to plot the best rule --requires installing plot dependencies
+best_rule.plot()
+
+# or get a networkx.DiGraph representation of the rule --requires installing plot dependencies
+G = best_rule.to_graph()
+print(G)</pre>
+          </div>
+          <div class="card-links" style="margin-top: 0.55rem;">
+            <a href="https://www.fcatalyst.com/trends-and-signals/blog/june2023/explainable-ai-using-expressive-boolean-formulas" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Fidelity Blog Post</a>
+            <a href="https://www.fcatalyst.com/trends-and-signals/blog/nov2023/boolean-formulas-for-achieving-xai" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> FCAT Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/quantum-computing/explainable-ai-using-expressive-boolean-formulas/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon Quantum Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/machine-learning/better-decisions-at-scale-how-mathematical-optimization-delivers-where-intuition-fails/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon AWS Blog Post</a>
+            <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
+          </div>
+          <div class="bibtex-inline">
+            <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
+            <pre>@inproceedings{boolxai,
+  title={BoolXAI: Explainable AI Using Expressive Boolean Formulas},
+  author={Kad{\i}{\u{g}}lu, Serdar and Zhu, Elton Yechao and Rosenberg, Gili and Brubaker, John Kyle and Schuetz, Martin JA and Salton, Grant and Zhu, Zhihuai and Katzgraber, Helmut G},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={39},
+  number={28},
+  pages={28900--28906},
+  year={2025}
+}</pre>
+          </div>
+          <div class="downloads-row">
+            <a href="https://pepy.tech/project/boolxai" class="downloads-badge" target="_blank" rel="noopener noreferrer">
+              <img src="https://static.pepy.tech/personalized-badge/boolxai?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="BoolXAI downloads">
+            </a>
+            <p class="card-venue">Serdar Kadıoğlu, Elton Zhu, Gili Rosenberg, Martin Schuetz</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ─── TALK ─── -->
+<section id="talk">
+  <div class="section-header">
+    <h2>Industry-Strength Open-Source Software</h2>
+<!--    <p>Featured talk on building production-grade open-source AI software.</p>-->
+  </div>
+  <div class="talk-embed">
+    <iframe src="https://www.youtube.com/embed/54d_YUalvOA" title="Industry-Strength Open-Source Software" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ─── PATENTS ─── -->
+<section id="patents">
+  <div class="section-header">
+    <h2>Patents</h2>
+    <p>Selected patents across recommender systems, fairness, optimization, predictive modeling, and reinforcement learning.</p>
+  </div>
+  <div class="events-grid">
+    <a href="https://patents.google.com/patent/US12493906B2/en" class="event-chip" id="patent-cross-system-recommender" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Cross-system recommender
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-cross-system-recommender')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US20250307707A1/en" class="event-chip" id="patent-fairness-classification-models" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Evaluating probabilistic fairness of machine learning classification models
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-fairness-classification-models')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US12169870B2/en" class="event-chip" id="patent-data-driven-optimization" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Automatic data-driven optimization of a target outcome using machine learning
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-data-driven-optimization')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US20240232652A1/en" class="event-chip" id="patent-constraint-based-predictive-ml" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Constraint-based predictive machine learning
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-constraint-based-predictive-ml')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US11799734B1/en" class="event-chip" id="patent-clickstream-featurization" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Determining future user actions using time-based featurization of clickstream data
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-clickstream-featurization')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US20220188843A1/en" class="event-chip" id="patent-surrogate-ground-truth" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Surrogate ground truth generation in AI-based marketing campaigns
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-surrogate-ground-truth')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US11361239B2/en" class="event-chip" id="patent-content-classification-recommendation" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Digital content classification and recommendation based on AI reinforcement learning
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-content-classification-recommendation')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://patents.google.com/patent/US10936961B1/en" class="event-chip" id="patent-automated-predictive-recommendations" target="_blank">
+      <i class="fa-solid fa-file-contract"></i> Automated predictive product recommendations using reinforcement learning
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('patent-automated-predictive-recommendations')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ─── RESOURCES ─── -->
+<section id="resources">
+  <div class="section-header">
+    <h2>Resources</h2>
+    <p>Talks, tutorials, community resources, and practical references for building recommender systems.</p>
+  </div>
+  <div class="events-grid">
+    <a href="https://www.youtube.com/watch?v=PWcNlRI00jo&t=4974s" class="event-chip" id="resource-nvidia-keynote" target="_blank">
+      <i class="fa-solid fa-video"></i> NVIDIA Keynote
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-nvidia-keynote')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.amherst.edu/news/events/calendar/node/941409" class="event-chip" id="resource-amherst-enterprise-ai" target="_blank">
+      <i class="fa-solid fa-building-columns"></i> Enterprise AI at Amherst College
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-amherst-enterprise-ai')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://mediaspace.bucknell.edu/media/Optimized+Item+Selection+to+Boost+Exploration+for+Recommender+Systems+-+Serdar+Kadioglu%2C+Fidelity%2C+11+11+2022/1_3iou676g/185503823" class="event-chip" id="resource-bucknell-guest-lecture" target="_blank">
+      <i class="fa-solid fa-chalkboard-user"></i> Invited Lecture at Bucknell University
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-bucknell-guest-lecture')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.comet.com/site/blog/resources-for-building-better-recommender-systems/" class="event-chip" id="resource-comet-ml" target="_blank">
+      <i class="fa-solid fa-newspaper"></i> Comet ML Hyper-Personalization
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-comet-ml')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://github.com/ACMRecSys/recsys-evaluation-frameworks" class="event-chip" id="resource-acm-recsys-frameworks" target="_blank">
+      <i class="fa-brands fa-github"></i> ACM RecSys Official Frameworks
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-acm-recsys-frameworks')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://odsc.com/speakers/mab2rec-a-modular-approach-to-building-bandit-based-recommenders/" class="event-chip" id="resource-odsc-tutorial" target="_blank">
+      <i class="fa-solid fa-graduation-cap"></i> Mab2Rec Tutorial at ODSC
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-odsc-tutorial')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://partiful.com/e/rbVsVPeTFoekgmfeFl7x" class="event-chip" id="resource-techweek-nyc" target="_blank">
+      <i class="fa-solid fa-briefcase"></i> Business Impact with Open-Source AI at NYC TechWeek
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-techweek-nyc')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+  </div>
+</section>
+
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <p>
+    Built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+    This website is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> License.
+  </p>
+</footer>
+
+<script>
+function toggleInlinePanel(id, btn) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  panel.classList.toggle('active');
+  btn.classList.toggle('active');
+}
+
+function toggleBibtex(btn) {
+  btn.classList.toggle('active');
+  let bibtexDiv = btn.closest('.card-links').nextElementSibling;
+  while (bibtexDiv && !bibtexDiv.classList.contains('bibtex-inline')) {
+    bibtexDiv = bibtexDiv.nextElementSibling;
+  }
+  if (!bibtexDiv) return;
+  bibtexDiv.classList.toggle('active');
+}
+
+function toggleHeroBibtex(id, btn) {
+  const bibtexDiv = document.getElementById(id);
+  if (!bibtexDiv) return;
+  bibtexDiv.classList.toggle('active');
+  btn.classList.toggle('active');
+}
+
+function copyBibtexInline(btn) {
+  const pre = btn.nextElementSibling;
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+function copyBibtex(btn, id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// ── ANCHOR SYSTEM ──
+function copyAnchor(id) {
+  const url = window.location.origin + window.location.pathname + '#' + id;
+  navigator.clipboard.writeText(url).then(() => {
+    // Find the anchor button within the target element
+    const target = document.getElementById(id);
+    if (!target) return;
+    const btn = target.querySelector('.anchor-link') || target.querySelector('.event-anchor');
+    if (btn) {
+      const tooltip = btn.querySelector('.anchor-tooltip');
+      if (tooltip) {
+        const orig = tooltip.textContent;
+        tooltip.textContent = 'Copied!';
+        tooltip.style.opacity = '1';
+        setTimeout(() => {
+          tooltip.textContent = orig;
+          tooltip.style.opacity = '';
+        }, 1500);
+      } else {
+        // For event anchors without tooltip
+        btn.style.color = 'var(--accent)';
+        btn.style.opacity = '1';
+        setTimeout(() => {
+          btn.style.color = '';
+          btn.style.opacity = '';
+        }, 1500);
+      }
+    }
+  });
+}
+
+// ── HIGHLIGHT ON HASH NAVIGATION ──
+function highlightTarget() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+  const target = document.getElementById(hash);
+  if (!target) return;
+
+  // Remove any existing highlights
+  document.querySelectorAll('.anchor-highlight').forEach(el => {
+    el.classList.remove('anchor-highlight');
+  });
+
+  // Add highlight class
+  target.classList.add('anchor-highlight');
+
+  // Clean up after animation
+  setTimeout(() => {
+    target.classList.remove('anchor-highlight');
+  }, 2000);
+}
+
+// Run on page load and hash changes
+window.addEventListener('hashchange', highlightTarget);
+window.addEventListener('load', () => {
+  setTimeout(highlightTarget, 300);
+});
+
+// Also highlight when clicking internal pub-list links
+document.querySelectorAll('.pub-link').forEach(link => {
+  link.addEventListener('click', () => {
+    setTimeout(highlightTarget, 400);
+  });
+});
+</script>
 
 </body>
 </html>
