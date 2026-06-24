@@ -1,21 +1,11 @@
 [![ci](https://github.com/fidelity/mab2rec/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fidelity/mab2rec/actions/workflows/ci.yml) [![PyPI version fury.io](https://badge.fury.io/py/mab2rec.svg)](https://pypi.python.org/pypi/mab2rec/) [![PyPI license](https://img.shields.io/pypi/l/mab2rec.svg)](https://pypi.python.org/pypi/mab2rec/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Downloads](https://static.pepy.tech/personalized-badge/mab2rec?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads)](https://pepy.tech/project/mab2rec)
 
-# Mab2Rec: Multi-Armed Bandits Recommender 
+# Mab2Rec: Multi-Armed Bandits Recommender
 
-Mab2Rec ([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python library for building bandit-based recommendation algorithms. It supports **context-free**, **parametric** and **non-parametric** **contextual** bandit models powered by [MABWiser](https://github.com/fidelity/mabwiser) and fairness and recommenders evaluations powered by [Jurity](https://github.com/fidelity/jurity).
-The library is designed with rapid experimentation in mind, follows the [PEP-8 standards](https://www.python.org/dev/peps/pep-0008/), and is tested heavily.
+Mab2Rec ([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python framework for building bandit-based recommendation algorithms. It supports context-free, parametric and non-parametric contextual bandit models. 
+Mab2Rec is designed to enable a **modular**, **interoperable**, and **scalable** AI ecosystem for recommender systems built around industry-strength, reusable, open-source software. The strategy behind the core components is detailed in [Open-Source AI at Scale: Establishing an Enterprise AI Strategy through Modular Frameworks (AI Magazine'25)](https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032). 
 
-Mab2Rec is built on top of several other open-source software developed at the AI Center at Fidelity:
-
-* [MABWiser](https://github.com/fidelity/mabwiser) to create multi-armed bandit recommendation algorithms ([Bridge@AAAI'24](http://osullivan.ucc.ie/CPML2024/papers/06.pdf), [TMLR'22](https://openreview.net/pdf?id=sX9d3gfwtE), [IJAIT'21](https://www.worldscientific.com/doi/abs/10.1142/S0218213021500214), [ICTAI'19](https://ieeexplore.ieee.org/document/8995418)).
-* [TextWiser](https://github.com/fidelity/textwiser) to create item representations via text featurization ([AAAI'21](https://ojs.aaai.org/index.php/AAAI/article/view/17814)).
-* [Selective](https://github.com/fidelity/selective) to create user representations via feature selection ([AMAI'24](https://link.springer.com/article/10.1007/s10472-024-09941-x), [CPAIOR'21](https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27), [DSO@IJCAI'21](https://arxiv.org/abs/2112.03105)).
-* [Seq2Pat](https://github.com/fidelity/seq2pat) to create user representations via sequential pattern mining ([AI Magazine'23](https://onlinelibrary.wiley.com/doi/epdf/10.1002/aaai.12081), [AAAI'22](https://ojs.aaai.org/index.php/AAAI/article/view/21542), [Bridge@AAAI'23](http://osullivan.ucc.ie/CPML2023/submissions/09.pdf), [Frontiers'22](https://www.frontiersin.org/articles/10.3389/frai.2022.868085/full), [KDF@AAAI'22](https://arxiv.org/abs/2201.09178), [CMU Blog Post](https://www.cmu.edu/tepper/news/stories/2023/may/fidelity-ai.html))
-* [Jurity](https://github.com/fidelity/jurity) to evaluate recommendations including fairness metrics ([ACM'24](https://dl.acm.org/doi/10.1145/3700145), [LION'23](https://link.springer.com/chapter/10.1007/978-3-031-44505-7_29), [CIKM'22](https://ceur-ws.org/Vol-3318/short6.pdf), [ICMLA'21](https://ieeexplore.ieee.org/abstract/document/9680169)).
-
-An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is presented at [AAAI 2024](https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems) and [All Things Open 2021](https://www.youtube.com/watch?v=54d_YUalvOA). There is a corresponding [blogpost](https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/) to serve as a starting point for practioners to build and deploy bandit-based recommenders using Mab2Rec.
-
-Documentation is available at [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
+Mab2Rec Homepage for more details [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
 
 ## Usage Patterns
 
