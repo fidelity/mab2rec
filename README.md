@@ -2,10 +2,9 @@
 
 # Mab2Rec: Multi-Armed Bandits Recommender
 
-Mab2Rec ([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python framework for building bandit-based recommendation algorithms. It supports context-free, parametric and non-parametric contextual bandit models. 
-Mab2Rec is designed to enable a **modular**, **interoperable**, and **scalable** AI ecosystem for recommender systems built around industry-strength, reusable, open-source software. The strategy behind the core components is detailed in [Open-Source AI at Scale: Establishing an Enterprise AI Strategy through Modular Frameworks (AI Magazine'25)](https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032). 
+Mab2Rec ([AAAI'24](https://ojs.aaai.org/index.php/AAAI/article/view/30341)) is a Python framework for building bandit-based recommendation algorithms. It supports context-free, parametric and non-parametric contextual bandit models. It is designed to enable a **modular**, **interoperable**, and **scalable** AI ecosystem for recommender systems built around industry-strength, reusable, open-source software. The strategy behind the core components is detailed in [Open-Source AI at Scale: Establishing an Enterprise AI Strategy through Modular Frameworks (AI Magazine'25)](https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032). 
 
-Mab2Rec Homepage for more details [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
+Please see the Mab2Rec Homepage for more details [fidelity.github.io/mab2rec](https://fidelity.github.io/mab2rec).
 
 ## Usage Patterns
 
@@ -17,7 +16,7 @@ If you are new user, the best place to start is to experiment with multiple band
 ### Single Recommender
 
 ```python
-# Example of how to train an singler recommender to generate top-4 recommendations
+# Example of how to train a single recommender to generate top-4 recommendations
 
 # Import 
 from mab2rec import BanditRecommender, LearningPolicy

@@ -18,6 +18,8 @@ Mab2Rec and several of the open-source software it is built on is developed by t
 An introduction to **content- and context-aware** recommender systems and an overview of the building blocks of the library is `presented at All Things Open 2021 <https://www.youtube.com/watch?v=54d_YUalvOA>`_.
 
 .. include:: quick.rst
+    :start-after: .. _quick:
+
 
 Source Code
 ===========
