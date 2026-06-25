@@ -1138,20 +1138,20 @@
         <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
         <pre># Example of how to train a single recommender to generate top-4 recommendations
 
-# Import 
+# Import
 from mab2rec import BanditRecommender, LearningPolicy
 from mab2rec.pipeline import train, score
 
-# LinGreedy recommender to select top-4 items with 10% random exploration 
+# LinGreedy recommender to select top-4 items with 10% random exploration
 rec = BanditRecommender(LearningPolicy.LinGreedy(epsilon=0.1), top_k=4)
 
-# Train on (user, item, response) interactions in train data using user features 
-train(rec, data='data/data_train.csv', 
+# Train on (user, item, response) interactions in train data using user features
+train(rec, data='data/data_train.csv',
       user_features='data/features_user.csv')
 
-# Score recommendations for users in test data. The output df holds 
-# user_id, item_id, score columns for every test user for top-k items 
-df = score(rec, data='data/data_test.csv', 
+# Score recommendations for users in test data. The output df holds
+# user_id, item_id, score columns for every test user for top-k items
+df = score(rec, data='data/data_test.csv',
            user_features='data/features_user.csv')</pre>
       </div>
       <div class="bibtex-inline" id="bib-aaai">
@@ -1351,7 +1351,7 @@ arms = ['Arm1', 'Arm2']
 decisions = ['Arm1', 'Arm1', 'Arm2', 'Arm1']
 rewards = [20, 17, 25, 9]
 
-# Model 
+# Model
 mab = MAB(arms, LearningPolicy.UCB1(alpha=1.25))
 
 # Train
@@ -1693,7 +1693,7 @@ print("Multi-class multi-label Fairness scores: ", multi_metric.get_scores(multi
             <a href="https://arxiv.org/pdf/2605.12139" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'26</a>
             <a href="https://www.mdpi.com/2504-4990/5/4/86" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> MAKE'23</a>
             <a href="https://arxiv.org/pdf/2306.03976" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> arXiv'23</a>
-            <a href="https://nbviewer.org/github/skadio/skadio.github.io/blob/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
+            <a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/skadio/skadio.github.io/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
           </div>
           <div class="quickstart-inline" id="quickstart-boolxai">
             <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
@@ -1702,14 +1702,14 @@ from sklearn.metrics import balanced_accuracy_score
 
 from boolxai import BoolXAI, Operator
 
-# Create random toy data for binary classification. X and y must be binary! 
+# Create random toy data for binary classification. X and y must be binary!
 rng = np.random.default_rng(seed=42)
 X = rng.choice([0, 1], size=(100, 10))
 y = rng.choice([0, 1], size=100)
 
 # Rule classifier with maximum depth, complexity, possible operators
 rule_classifier = BoolXAI.RuleClassifier(max_depth=3,
-                                         max_complexity=6, 
+                                         max_complexity=6,
                                          operators=[Operator.And, Operator.Or, Operator.Choose, Operator.AtMost, Operator.AtLeast],
                                          random_state=42)
 
@@ -1862,6 +1862,22 @@ print(G)</pre>
     <a href="https://partiful.com/e/rbVsVPeTFoekgmfeFl7x" class="event-chip" id="resource-techweek-nyc" target="_blank">
       <i class="fa-solid fa-briefcase"></i> Business Impact with Open-Source AI at NYC TechWeek
       <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-techweek-nyc')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://events.engineering.upenn.edu/event/cis-189-guest-lecture-optimization-in-practice/" class="event-chip" id="resource-upenn-guest-lecture" target="_blank">
+      <i class="fa-solid fa-chalkboard-user"></i> Guest Lecture at UPenn
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-upenn-guest-lecture')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://2021.allthingsopen.org/sessions/building-recommender-systems-a-case-study-with-open-source-software/" class="event-chip" id="resource-all-things-open" target="_blank">
+      <i class="fa-solid fa-chalkboard-user"></i> Invited Session at All Things Open
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-all-things-open')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.lix.polytechnique.fr/optimix/seminars/2023-11-27-serdar-kadioglu/" class="event-chip" id="resource-polytechnique-seminar" target="_blank">
+      <i class="fa-solid fa-graduation-cap"></i> Research Seminar at École Polytechnique
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-polytechnique-seminar')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.i3s.unice.fr/actualite/20231122-expose-de-serdar-kadioglu-associate-professor-of-computer-science-at-br" class="event-chip" id="resource-unice-seminar" target="_blank">
+      <i class="fa-solid fa-graduation-cap"></i> Research Seminar at Université Côte d'Azur
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-unice-seminar')" title="Copy link"><i class="fa-solid fa-link"></i></span>
     </a>
   </div>
 </section>
