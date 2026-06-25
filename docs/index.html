@@ -1008,11 +1008,41 @@
       background: var(--card-bg);
       box-shadow: var(--shadow-sm);
     }
+    .doc-embed object,
     .doc-embed iframe {
       width: 100%;
       height: 520px;
       border: 0;
       display: block;
+    }
+    .pdfjs-viewer {
+      padding: 0.85rem;
+      max-height: 720px;
+      overflow: auto;
+      background: #f7f9fc;
+    }
+    .pdfjs-page {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 0.85rem;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .pdfjs-note {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .doc-embed-fallback {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
     }
 
     /* ── FOOTER ── */
@@ -1245,7 +1275,15 @@ df = score(rec, data='data/data_test.csv',
     <h2>Open-Source AI at Scale: <br>Establishing an Enterprise AI Strategy</h2>
   </div>
   <div class="doc-embed">
-    <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025 paper"></iframe>
+    <div id="featured-paper-pdf" class="pdfjs-viewer" data-pdf-src="2025_AI_Magazine_Kadioglu.pdf" aria-label="AI Magazine 2025 paper">
+      <p class="pdfjs-note">Loading PDF preview...</p>
+    </div>
+    <object id="featured-paper-native" data="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" type="application/pdf" aria-label="AI Magazine 2025 paper" style="display:none;">
+      <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025 paper"></iframe>
+    </object>
+    <p class="doc-embed-fallback">
+      If the PDF preview does not load, <a href="2025_AI_Magazine_Kadioglu.pdf" target="_blank" rel="noopener">open it in a new tab</a>.
+    </p>
   </div>
 </section>
 
@@ -1893,7 +1931,49 @@ print(G)</pre>
   </p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+async function initFeaturedPaperPdf() {
+  const viewer = document.getElementById('featured-paper-pdf');
+  if (!viewer) return;
+
+  const pdfUrl = viewer.getAttribute('data-pdf-src');
+  const nativeFallback = document.getElementById('featured-paper-native');
+
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== 'function') {
+    viewer.style.display = 'none';
+    if (nativeFallback) nativeFallback.style.display = 'block';
+    return;
+  }
+
+  try {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const task = window.pdfjsLib.getDocument(pdfUrl);
+    const pdf = await task.promise;
+
+    viewer.innerHTML = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1 });
+      const availableWidth = Math.max(320, viewer.clientWidth - 24);
+      const scale = availableWidth / viewport.width;
+      const scaledViewport = page.getViewport({ scale: scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdfjs-page';
+      canvas.width = Math.floor(scaledViewport.width);
+      canvas.height = Math.floor(scaledViewport.height);
+
+      const context = canvas.getContext('2d');
+      await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+      viewer.appendChild(canvas);
+    }
+  } catch (err) {
+    viewer.style.display = 'none';
+    if (nativeFallback) nativeFallback.style.display = 'block';
+  }
+}
+
 function toggleInlinePanel(id, btn) {
   const panel = document.getElementById(id);
   if (!panel) return;
@@ -1989,6 +2069,7 @@ function highlightTarget() {
 // Run on page load and hash changes
 window.addEventListener('hashchange', highlightTarget);
 window.addEventListener('load', () => {
+  initFeaturedPaperPdf();
   setTimeout(highlightTarget, 300);
 });
 
