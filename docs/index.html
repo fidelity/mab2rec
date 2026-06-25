@@ -219,6 +219,10 @@
       transform: translateY(-1px);
       box-shadow: var(--shadow-sm);
     }
+    .btn-icon-blue i { color: var(--blue); }
+    .btn-icon-green i { color: var(--teal); }
+    .btn-icon-yellow i { color: var(--gold); }
+    .btn-icon-red i { color: var(--accent); }
 
     /* ── SECTIONS ── */
     section {
@@ -1132,7 +1136,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-label">AI Center of Excellence at Fidelity Investments</div>
-    <h1>Mab2Rec:<br><span>Multi-Armed Bandits</span> Recommender</h1>
+    <h1>Mab2Rec:<br><span>Multi-Armed Bandit</span> Recommenders</h1>
     <p class="subtitle">Bandit-based recommender systems for enterprise applications with context-free, parametric, and non-parametric contextual policies.
       Designed for modularity, rapid experimentation, and rigorous evaluation.</p>
     <p class="authors">
@@ -1147,10 +1151,10 @@
     <div class="hero-buttons">
       <button class="btn btn-primary" onclick="toggleInlinePanel('quickstart-mab2rec', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
       <a href="https://github.com/fidelity/mab2rec" class="btn btn-outline" target="_blank"><i class="fa-brands fa-github"></i>Code</a>
-      <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
-      <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
-      <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
-      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline" target="_blank"><i class="fa-solid fa-video"></i>Presentation</a>
+      <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline btn-icon-blue" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
+      <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline btn-icon-green" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
+      <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline btn-icon-yellow" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
+      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline btn-icon-red" target="_blank"><i class="fa-solid fa-video"></i>Presentation</a>
       <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'25</a>
       <a href="https://ojs.aaai.org/index.php/AAAI/article/view/30341" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'24</a>
       <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aimag', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AI Magazine'25</button>
@@ -1275,11 +1279,11 @@ df = score(rec, data='data/data_test.csv',
     <h2>Open-Source AI at Scale: <br>Establishing an Enterprise AI Strategy</h2>
   </div>
   <div class="doc-embed">
-    <div id="featured-paper-pdf" class="pdfjs-viewer" data-pdf-src="2025_AI_Magazine_Kadioglu.pdf" aria-label="AI Magazine 2025 paper">
+    <div id="featured-paper-pdf" class="pdfjs-viewer" data-pdf-src="2025_AI_Magazine_Kadioglu.pdf" aria-label="AI Magazine 2025">
       <p class="pdfjs-note">Loading PDF preview...</p>
     </div>
-    <object id="featured-paper-native" data="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" type="application/pdf" aria-label="AI Magazine 2025 paper" style="display:none;">
-      <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025 paper"></iframe>
+    <object id="featured-paper-native" data="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" type="application/pdf" aria-label="AI Magazine 2025" style="display:none;">
+      <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025"></iframe>
     </object>
     <p class="doc-embed-fallback">
       If the PDF preview does not load, <a href="2025_AI_Magazine_Kadioglu.pdf" target="_blank" rel="noopener">open it in a new tab</a>.
@@ -1780,8 +1784,8 @@ print(G)</pre>
           <div class="card-links" style="margin-top: 0.55rem;">
             <a href="https://www.fcatalyst.com/trends-and-signals/blog/june2023/explainable-ai-using-expressive-boolean-formulas" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Fidelity Blog Post</a>
             <a href="https://www.fcatalyst.com/trends-and-signals/blog/nov2023/boolean-formulas-for-achieving-xai" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> FCAT Blog Post</a>
-            <a href="https://aws.amazon.com/blogs/quantum-computing/explainable-ai-using-expressive-boolean-formulas/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon Quantum Blog Post</a>
-            <a href="https://aws.amazon.com/blogs/machine-learning/better-decisions-at-scale-how-mathematical-optimization-delivers-where-intuition-fails/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon AWS Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/quantum-computing/explainable-ai-using-expressive-boolean-formulas/" class="card-link" target="_blank"><i class="fa-brands fa-aws"></i> Amazon Quantum Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/machine-learning/better-decisions-at-scale-how-mathematical-optimization-delivers-where-intuition-fails/" class="card-link" target="_blank"><i class="fa-brands fa-aws"></i> Amazon AWS Blog Post</a>
             <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
           </div>
           <div class="bibtex-inline">
