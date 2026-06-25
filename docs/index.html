@@ -1101,6 +1101,7 @@
 <!-- ─── HERO ─── -->
 <header class="hero">
   <div class="hero-inner">
+    <div class="hero-label">AI Center of Excellence at Fidelity Investments</div>
     <h1>Mab2Rec:<br><span>Multi-Armed Bandits</span> Recommender</h1>
     <p class="subtitle">Bandit-based recommender systems for enterprise applications with context-free, parametric, and non-parametric contextual policies.
       Designed for modularity, rapid experimentation, and rigorous evaluation.</p>
@@ -1119,7 +1120,7 @@
       <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
       <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
       <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
-      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
+      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline" target="_blank"><i class="fa-solid fa-video"></i>Presentation</a>
       <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'25</a>
       <a href="https://ojs.aaai.org/index.php/AAAI/article/view/30341" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'24</a>
       <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aimag', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AI Magazine'25</button>
@@ -1138,20 +1139,20 @@
         <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
         <pre># Example of how to train a single recommender to generate top-4 recommendations
 
-# Import 
+# Import
 from mab2rec import BanditRecommender, LearningPolicy
 from mab2rec.pipeline import train, score
 
-# LinGreedy recommender to select top-4 items with 10% random exploration 
+# LinGreedy recommender to select top-4 items with 10% random exploration
 rec = BanditRecommender(LearningPolicy.LinGreedy(epsilon=0.1), top_k=4)
 
-# Train on (user, item, response) interactions in train data using user features 
-train(rec, data='data/data_train.csv', 
+# Train on (user, item, response) interactions in train data using user features
+train(rec, data='data/data_train.csv',
       user_features='data/features_user.csv')
 
-# Score recommendations for users in test data. The output df holds 
-# user_id, item_id, score columns for every test user for top-k items 
-df = score(rec, data='data/data_test.csv', 
+# Score recommendations for users in test data. The output df holds
+# user_id, item_id, score columns for every test user for top-k items
+df = score(rec, data='data/data_test.csv',
            user_features='data/features_user.csv')</pre>
       </div>
       <div class="bibtex-inline" id="bib-aaai">
@@ -1351,7 +1352,7 @@ arms = ['Arm1', 'Arm2']
 decisions = ['Arm1', 'Arm1', 'Arm2', 'Arm1']
 rewards = [20, 17, 25, 9]
 
-# Model 
+# Model
 mab = MAB(arms, LearningPolicy.UCB1(alpha=1.25))
 
 # Train
@@ -1402,7 +1403,7 @@ mab.predict()</pre>
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-textwiser', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/textwiser" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17814" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'21</a>
-            <a href="https://slideslive.com/38951112/representing-the-unification-of-text-featurization-using-a-contextfree-grammar?ref=account-folder-75501-folders" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Presentation</a>
+            <a href="https://slideslive.com/38951112/representing-the-unification-of-text-featurization-using-a-contextfree-grammar?ref=account-folder-75501-folders" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
             <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
           </div>
           <div class="quickstart-inline" id="quickstart-textwiser">
@@ -1475,9 +1476,10 @@ vecs = emb.fit_transform(documents)</pre>
             <a href="https://github.com/fidelity/selective" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
             <a href="https://link.springer.com/article/10.1007/s10472-024-09941-x" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AMAI'24</a>
             <a href="https://link.springer.com/chapter/10.1007/978-3-030-78230-6_27" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> CPAIOR'21</a>
+            <a href="https://www.youtube.com/watch?v=akMsTAh9ed8&t=1s" class="card-link" target="_blank"><i class="fa-solid fa-video"></i> CPAIOR'21</a>
             <a href="https://arxiv.org/abs/2112.03105" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> DSO@IJCAI'21</a>
             <a href="https://huggingface.co/datasets/skadio/optimized_item_selection" class="card-link" target="_blank"><span class="hf-emoji">🤗</span> Dataset</a>
-            <a href="https://www.youtube.com/watch?v=akMsTAh9ed8&t=1s" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Presentation</a>
+            <a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/skadio/skadio.github.io/master/files/2022_NVIDIA_GTC_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-pdf"></i> NVIDIA GTC Slides</a>
             <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
           </div>
           <div class="quickstart-inline" id="quickstart-selective">
@@ -1690,10 +1692,10 @@ print("Multi-class multi-label Fairness scores: ", multi_metric.get_scores(multi
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-boolxai', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/boolxai" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/35157" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'25</a>
+            <a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/skadio/skadio.github.io/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> AAAI Slides</a>
             <a href="https://arxiv.org/pdf/2605.12139" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'26</a>
             <a href="https://www.mdpi.com/2504-4990/5/4/86" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> MAKE'23</a>
             <a href="https://arxiv.org/pdf/2306.03976" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> arXiv'23</a>
-            <a href="https://nbviewer.org/github/skadio/skadio.github.io/blob/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
           </div>
           <div class="quickstart-inline" id="quickstart-boolxai">
             <button class="copy-btn" onclick="copyBibtexInline(this)">Copy</button>
@@ -1702,14 +1704,14 @@ from sklearn.metrics import balanced_accuracy_score
 
 from boolxai import BoolXAI, Operator
 
-# Create random toy data for binary classification. X and y must be binary! 
+# Create random toy data for binary classification. X and y must be binary!
 rng = np.random.default_rng(seed=42)
 X = rng.choice([0, 1], size=(100, 10))
 y = rng.choice([0, 1], size=100)
 
 # Rule classifier with maximum depth, complexity, possible operators
 rule_classifier = BoolXAI.RuleClassifier(max_depth=3,
-                                         max_complexity=6, 
+                                         max_complexity=6,
                                          operators=[Operator.And, Operator.Or, Operator.Choose, Operator.AtMost, Operator.AtLeast],
                                          random_state=42)
 
@@ -1862,6 +1864,22 @@ print(G)</pre>
     <a href="https://partiful.com/e/rbVsVPeTFoekgmfeFl7x" class="event-chip" id="resource-techweek-nyc" target="_blank">
       <i class="fa-solid fa-briefcase"></i> Business Impact with Open-Source AI at NYC TechWeek
       <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-techweek-nyc')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://events.engineering.upenn.edu/event/cis-189-guest-lecture-optimization-in-practice/" class="event-chip" id="resource-upenn-guest-lecture" target="_blank">
+      <i class="fa-solid fa-chalkboard-user"></i> Guest Lecture at University of Pennsylvania
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-upenn-guest-lecture')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://2021.allthingsopen.org/sessions/building-recommender-systems-a-case-study-with-open-source-software/" class="event-chip" id="resource-all-things-open" target="_blank">
+      <i class="fa-solid fa-chalkboard-user"></i> Invited Session at All Things Open
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-all-things-open')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.lix.polytechnique.fr/optimix/seminars/2023-11-27-serdar-kadioglu/" class="event-chip" id="resource-polytechnique-seminar" target="_blank">
+      <i class="fa-solid fa-graduation-cap"></i> Research Seminar at École Polytechnique
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-polytechnique-seminar')" title="Copy link"><i class="fa-solid fa-link"></i></span>
+    </a>
+    <a href="https://www.i3s.unice.fr/actualite/20231122-expose-de-serdar-kadioglu-associate-professor-of-computer-science-at-br" class="event-chip" id="resource-unice-seminar" target="_blank">
+      <i class="fa-solid fa-graduation-cap"></i> Research Seminar at Université Côte d'Azur
+      <span class="event-anchor" onclick="event.preventDefault(); event.stopPropagation(); copyAnchor('resource-unice-seminar')" title="Copy link"><i class="fa-solid fa-link"></i></span>
     </a>
   </div>
 </section>
