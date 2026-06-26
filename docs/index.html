@@ -219,6 +219,10 @@
       transform: translateY(-1px);
       box-shadow: var(--shadow-sm);
     }
+    .btn-icon-blue i { color: var(--blue); }
+    .btn-icon-green i { color: var(--teal); }
+    .btn-icon-yellow i { color: var(--gold); }
+    .btn-icon-red i { color: var(--accent); }
 
     /* ── SECTIONS ── */
     section {
@@ -1008,11 +1012,41 @@
       background: var(--card-bg);
       box-shadow: var(--shadow-sm);
     }
+    .doc-embed object,
     .doc-embed iframe {
       width: 100%;
       height: 520px;
       border: 0;
       display: block;
+    }
+    .pdfjs-viewer {
+      padding: 0.85rem;
+      max-height: 720px;
+      overflow: auto;
+      background: #f7f9fc;
+    }
+    .pdfjs-page {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 0.85rem;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .pdfjs-note {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .doc-embed-fallback {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
     }
 
     /* ── FOOTER ── */
@@ -1102,7 +1136,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-label">AI Center of Excellence at Fidelity Investments</div>
-    <h1>Mab2Rec:<br><span>Multi-Armed Bandits</span> Recommender</h1>
+    <h1>Mab2Rec:<br><span>Multi-Armed Bandit</span> Recommenders</h1>
     <p class="subtitle">Bandit-based recommender systems for enterprise applications with context-free, parametric, and non-parametric contextual policies.
       Designed for modularity, rapid experimentation, and rigorous evaluation.</p>
     <p class="authors">
@@ -1117,16 +1151,14 @@
     <div class="hero-buttons">
       <button class="btn btn-primary" onclick="toggleInlinePanel('quickstart-mab2rec', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
       <a href="https://github.com/fidelity/mab2rec" class="btn btn-outline" target="_blank"><i class="fa-brands fa-github"></i>Code</a>
-      <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
-      <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
-      <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
-      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline" target="_blank"><i class="fa-solid fa-video"></i>Presentation</a>
+      <a href="https://fidelity.github.io/mab2rec/documentation.html" class="btn btn-outline btn-icon-blue" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
+      <a href="https://github.com/fidelity/mab2rec#usage-examples" class="btn btn-outline btn-icon-green" target="_blank"><i class="fa-solid fa-flask"></i> Notebooks</a>
+      <a href="https://2022.allthingsopen.org/introducing-mab2rec-a-multi-armed-bandit-recommender-library/" class="btn btn-outline btn-icon-yellow" target="_blank"> <i class="fa-solid fa-newspaper"></i> Tutorial</a>
+      <a href="https://underline.io/lecture/91479-building-higher-order-abstractions-from-the-components-of-recommender-systems" class="btn btn-outline btn-icon-red" target="_blank"><i class="fa-solid fa-video"></i>Presentation</a>
       <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/aaai.70032" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'25</a>
       <a href="https://ojs.aaai.org/index.php/AAAI/article/view/30341" class="btn btn-outline" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'24</a>
       <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aimag', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AI Magazine'25</button>
       <button class="btn btn-outline" onclick="toggleHeroBibtex('bib-aaai', this)"><i class="fa-solid fa-chevron-down"></i> BibTeX · AAAI'24</button>
-<!--      <a href="https://huggingface.co/spaces/skadio/text2model-leaderboard" class="btn btn-outline" target="_blank"><span style="font-size:1rem; line-height:1;">🤗</span> Leaderboard</a>-->
-<!--      <a href="https://huggingface.co/spaces/skadio/text2zinc-editor" class="card-link" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Interactive Editor</a>-->
     </div>
     <div class="install-top-row">
       <div class="install-command"><span class="install-label">Install</span><code>pip install mab2rec</code></div>
@@ -1245,7 +1277,15 @@ df = score(rec, data='data/data_test.csv',
     <h2>Open-Source AI at Scale: <br>Establishing an Enterprise AI Strategy</h2>
   </div>
   <div class="doc-embed">
-    <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025 paper"></iframe>
+    <div id="featured-paper-pdf" class="pdfjs-viewer" data-pdf-src="2025_AI_Magazine_Kadioglu.pdf" aria-label="AI Magazine 2025">
+      <p class="pdfjs-note">Loading PDF preview...</p>
+    </div>
+    <object id="featured-paper-native" data="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" type="application/pdf" aria-label="AI Magazine 2025" style="display:none;">
+      <iframe src="2025_AI_Magazine_Kadioglu.pdf#navpanes=0&view=FitH&zoom=page-fit" title="AI Magazine 2025"></iframe>
+    </object>
+    <p class="doc-embed-fallback">
+      If the PDF preview does not load, <a href="2025_AI_Magazine_Kadioglu.pdf" target="_blank" rel="noopener">open it in a new tab</a>.
+    </p>
   </div>
 </section>
 
@@ -1331,6 +1371,7 @@ df = score(rec, data='data/data_test.csv',
           <div class="card-links">
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-mabwiser', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/mabwiser" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://fidelity.github.io/mabwiser/" class="card-link" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
             <a href="http://osullivan.ucc.ie/CPML2024/papers/06.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Bridge@AAAI'24</a>
             <a href="https://arxiv.org/abs/2402.07936" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Arxiv'24</a>
             <a href="https://openreview.net/pdf?id=sX9d3gfwtE" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> TMLR'22</a>
@@ -1402,6 +1443,7 @@ mab.predict()</pre>
           <div class="card-links">
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-textwiser', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/textwiser" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://fidelity.github.io/textwiser/" class="card-link" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17814" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'21</a>
             <a href="https://slideslive.com/38951112/representing-the-unification-of-text-featurization-using-a-contextfree-grammar?ref=account-folder-75501-folders" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> Slides</a>
             <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
@@ -1546,6 +1588,7 @@ print("Scores:", list(selector.get_absolute_scores()))</pre>
           <div class="card-links">
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-seq2pat', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/seq2pat" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://fidelity.github.io/seq2pat/" class="card-link" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
             <a href="https://onlinelibrary.wiley.com/doi/epdf/10.1002/aaai.12081" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AI Magazine'23</a>
             <a href="http://osullivan.ucc.ie/CPML2023/submissions/09.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Bridge@AAAI'23</a>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/21542" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'22</a>
@@ -1617,6 +1660,7 @@ patterns = seq2pat.get_patterns(min_frequency=2)</pre>
           <div class="card-links">
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-jurity', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/jurity" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://fidelity.github.io/jurity/" class="card-link" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
             <a href="https://dl.acm.org/doi/10.1145/3700145" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ACM'24</a>
             <a href="https://arxiv.org/pdf/2403.12069" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'24</a>
             <a href="https://link.springer.com/chapter/10.1007/978-3-031-44505-7_29" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> LION'23</a>
@@ -1691,6 +1735,7 @@ print("Multi-class multi-label Fairness scores: ", multi_metric.get_scores(multi
           <div class="card-links">
             <button class="btn btn-outline" onclick="toggleInlinePanel('quickstart-boolxai', this)"><i class="fa-solid fa-chevron-down"></i> Quick Start</button>
             <a href="https://github.com/fidelity/boolxai" class="card-link" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://fidelity.github.io/boolxai/" class="card-link" target="_blank"><i class="fa-solid fa-book"></i> API Docs</a>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/35157" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AAAI'25</a>
             <a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/skadio/skadio.github.io/master/files/2025_IAAI_BoolXAI_Kadioglu.pdf" class="card-link" target="_blank"><i class="fa-solid fa-file-powerpoint"></i> AAAI Slides</a>
             <a href="https://arxiv.org/pdf/2605.12139" class="card-link" target="_blank"><i class="fa-solid fa-file-lines"></i> ArXiv'26</a>
@@ -1742,8 +1787,8 @@ print(G)</pre>
           <div class="card-links" style="margin-top: 0.55rem;">
             <a href="https://www.fcatalyst.com/trends-and-signals/blog/june2023/explainable-ai-using-expressive-boolean-formulas" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Fidelity Blog Post</a>
             <a href="https://www.fcatalyst.com/trends-and-signals/blog/nov2023/boolean-formulas-for-achieving-xai" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> FCAT Blog Post</a>
-            <a href="https://aws.amazon.com/blogs/quantum-computing/explainable-ai-using-expressive-boolean-formulas/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon Quantum Blog Post</a>
-            <a href="https://aws.amazon.com/blogs/machine-learning/better-decisions-at-scale-how-mathematical-optimization-delivers-where-intuition-fails/" class="card-link" target="_blank"><i class="fa-solid fa-newspaper"></i> Amazon AWS Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/quantum-computing/explainable-ai-using-expressive-boolean-formulas/" class="card-link" target="_blank"><i class="fa-brands fa-aws"></i> Amazon Quantum Blog Post</a>
+            <a href="https://aws.amazon.com/blogs/machine-learning/better-decisions-at-scale-how-mathematical-optimization-delivers-where-intuition-fails/" class="card-link" target="_blank"><i class="fa-brands fa-aws"></i> Amazon AWS Blog Post</a>
             <button class="bibtex-toggle" onclick="toggleBibtex(this)"><i class="fa-solid fa-chevron-down"></i> BibTeX</button>
           </div>
           <div class="bibtex-inline">
@@ -1893,7 +1938,49 @@ print(G)</pre>
   </p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+async function initFeaturedPaperPdf() {
+  const viewer = document.getElementById('featured-paper-pdf');
+  if (!viewer) return;
+
+  const pdfUrl = viewer.getAttribute('data-pdf-src');
+  const nativeFallback = document.getElementById('featured-paper-native');
+
+  if (!window.pdfjsLib || typeof window.pdfjsLib.getDocument !== 'function') {
+    viewer.style.display = 'none';
+    if (nativeFallback) nativeFallback.style.display = 'block';
+    return;
+  }
+
+  try {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const task = window.pdfjsLib.getDocument(pdfUrl);
+    const pdf = await task.promise;
+
+    viewer.innerHTML = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1 });
+      const availableWidth = Math.max(320, viewer.clientWidth - 24);
+      const scale = availableWidth / viewport.width;
+      const scaledViewport = page.getViewport({ scale: scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdfjs-page';
+      canvas.width = Math.floor(scaledViewport.width);
+      canvas.height = Math.floor(scaledViewport.height);
+
+      const context = canvas.getContext('2d');
+      await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+      viewer.appendChild(canvas);
+    }
+  } catch (err) {
+    viewer.style.display = 'none';
+    if (nativeFallback) nativeFallback.style.display = 'block';
+  }
+}
+
 function toggleInlinePanel(id, btn) {
   const panel = document.getElementById(id);
   if (!panel) return;
@@ -1989,6 +2076,7 @@ function highlightTarget() {
 // Run on page load and hash changes
 window.addEventListener('hashchange', highlightTarget);
 window.addEventListener('load', () => {
+  initFeaturedPaperPdf();
   setTimeout(highlightTarget, 300);
 });
 
