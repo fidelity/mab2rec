@@ -341,8 +341,9 @@
       padding: 0.6rem 0;
       border-bottom: 1px solid rgba(226,221,213,0.5);
       display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
       font-size: 0.9rem;
       line-height: 1.5;
     }
@@ -357,6 +358,21 @@
       color: var(--muted);
       min-width: 1.5rem;
       flex-shrink: 0;
+    }
+    .pub-list .pub-item-main {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      min-width: 0;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+    .pub-list .pub-download-badge {
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+    .pub-list .pub-download-badge img {
+      height: 18px;
     }
     .pub-list .pub-link {
       color: var(--ink);
@@ -388,6 +404,11 @@
     }
     .pub-list .pub-arxiv:hover {
       opacity: 0.7;
+    }
+    .downloads-summary {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
     }
     .install-top-row {
       margin-top: 1rem;
@@ -439,6 +460,31 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+    }
+    .downloads-total-badge {
+      display: inline-flex;
+      align-items: stretch;
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      line-height: 22px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+    }
+    .downloads-total-label {
+      background: #555;
+      color: #fff;
+      padding: 0 0.5rem;
+      letter-spacing: 0.01em;
+    }
+    .downloads-total-value {
+      background: #f39c12;
+      color: #fff;
+      padding: 0 0.55rem;
+      font-weight: 600;
+      min-width: 7ch;
+      text-align: center;
     }
     .card-install {
       display: inline-flex;
@@ -1228,36 +1274,60 @@ df = score(rec, data='data/data_test.csv',
     <div class="pub-index-title"><i class="fa-solid fa-bookmark"></i> Core Reusable Components</div>
     <ol class="pub-list">
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#mabwiser" class="pub-link"><strong>MABWiser:</strong> Multi-armed bandit recommendation algorithms</a>
         </span>
+<!--        <a href="https://pepy.tech/project/mabwiser" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/mabwiser?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="MABWiser downloads">-->
+<!--        </a>-->
       </li>
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#textwiser" class="pub-link"><strong>TextWiser:</strong> Item representations via text featurization</a>
         </span>
+<!--        <a href="https://pepy.tech/project/textwiser" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/textwiser?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="TextWiser downloads">-->
+<!--        </a>-->
       </li>
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#selective" class="pub-link"><strong>Selective:</strong> User representations via feature selection</a>
         </span>
+<!--        <a href="https://pepy.tech/project/selective" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/selective?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Selective downloads">-->
+<!--        </a>-->
       </li>
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#seq2pat" class="pub-link"><strong>Seq2Pat:</strong> Interaction behavior via sequential pattern mining</a>
         </span>
+<!--        <a href="https://pepy.tech/project/seq2pat" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/seq2pat?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Seq2Pat downloads">-->
+<!--        </a>-->
       </li>
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#jurity" class="pub-link"><strong>Jurity:</strong> Recommendation and fairness evaluation metrics</a>
         </span>
+<!--        <a href="https://pepy.tech/project/jurity" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/jurity?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="Jurity downloads">-->
+<!--        </a>-->
       </li>
       <li>
-        <span>
+        <span class="pub-item-main">
           <a href="#boolxai" class="pub-link"><strong>BoolXAI:</strong> Explainable AI based on expressive Boolean formulas</a>
         </span>
+<!--        <a href="https://pepy.tech/project/boolxai" class="downloads-badge pub-download-badge" target="_blank" rel="noopener noreferrer">-->
+<!--          <img src="https://static.pepy.tech/personalized-badge/boolxai?period=total&units=international_system&left_color=grey&right_color=orange&left_text=Downloads" alt="BoolXAI downloads">-->
+<!--        </a>-->
       </li>
     </ol>
+    <div class="downloads-summary">
+      <div class="downloads-total-badge" title="Total downloads across mab2rec, mabwiser, selective, seq2pat, jurity, boolxai">
+        <span class="downloads-total-label">Total Downloads</span>
+        <span class="downloads-total-value">3M+</span>
+      </div>
+    </div>
   </div>
   </div>
 
